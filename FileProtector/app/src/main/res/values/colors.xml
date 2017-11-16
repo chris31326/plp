@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f2f2f2</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorYellow">#ffcc00</color>
+    <color name="colorBackground">#f2f2f2</color>
+    <color name="colorText">#737373</color>
+    <color name="colorTextButton">#FFFFFF</color>
+    <color name="colorTextForBar">#FFFFFF</color>
+    <color name="colorTextUserInput">#404040</color>
+    <color name="colorTextHint">#51d8c7</color>
+    <color name="colorTopBar">#80ced6</color>
+    <color name="colorSecondBar">#737373</color>
+</resources>
