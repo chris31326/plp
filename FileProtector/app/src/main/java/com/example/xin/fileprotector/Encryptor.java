@@ -7,6 +7,7 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.util.Base64;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
@@ -23,8 +25,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableEntryException;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
@@ -42,16 +46,17 @@ public class Encryptor {
     private FileOutputStream fos = null;
     private KeyStore keyStore = null;
 
-    public Encryptor(KeyStore keyStore) {
+    Encryptor(KeyStore keyStore) {
         this.keyStore = keyStore;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public boolean encryptFile(InputStream fis, File outputFile, final String alias)
+    boolean encryptFile(InputStream fis, File outputFile, final String alias)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, KeyStoreException,
             UnrecoverableEntryException {
 
+        //TODO: IV?
         //byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         //IvParameterSpec ivspec = new IvParameterSpec(iv);
 
@@ -98,6 +103,19 @@ public class Encryptor {
             }
         }
         return success;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    String encryptText(String textToEncrypt, final String alias) throws NoSuchPaddingException,
+            NoSuchAlgorithmException , NoSuchProviderException, InvalidAlgorithmParameterException,
+            KeyStoreException, InvalidKeyException, UnrecoverableEntryException,
+            UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
+
+        final Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(alias));
+
+        byte[] result = cipher.doFinal(textToEncrypt.getBytes("UTF-8"));
+        return Base64.encodeToString(result, Base64.DEFAULT);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

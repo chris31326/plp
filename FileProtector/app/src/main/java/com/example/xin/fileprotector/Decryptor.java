@@ -1,5 +1,7 @@
 package com.example.xin.fileprotector;
 
+import android.util.Base64;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,8 +17,10 @@ import java.security.NoSuchProviderException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
@@ -32,7 +36,7 @@ public class Decryptor {
     private FileOutputStream fos = null;
     private KeyStore keyStore;
 
-    public Decryptor(KeyStore keyStore)  {
+    Decryptor(KeyStore keyStore)  {
         this.keyStore = keyStore;
     }
 
@@ -42,7 +46,7 @@ public class Decryptor {
 //        keyStore.load(null);
 //    }
 
-    public boolean decryptFile(File inputFile, File outputFile, final String alias)
+    boolean decryptFile(File inputFile, File outputFile, final String alias)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, UnrecoverableEntryException
             , KeyStoreException {
@@ -87,6 +91,18 @@ public class Decryptor {
             }
         }
         return success;
+    }
+
+    //TODO: IVs
+    String decryptText(String textToDecrypt, final String alias)  throws
+            NoSuchAlgorithmException, NoSuchPaddingException, UnrecoverableEntryException,
+            KeyStoreException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+
+        final Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(alias));
+
+        byte[] encryptedData = Base64.decode(textToDecrypt, Base64.DEFAULT);
+        return new String(cipher.doFinal(encryptedData));
     }
 
     private SecretKey getSecretKey(final String alias) throws NoSuchAlgorithmException,
