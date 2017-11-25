@@ -43,6 +43,7 @@ public class Encryptor {
     private static final String ALGORITHM = "AES/CBC/PKCS7Padding";
     private static final int BUFFER_SIZE = 1024;
     //private FileInputStream fis = null;
+    private byte iv[];
     private FileOutputStream fos = null;
     private KeyStore keyStore = null;
 
@@ -50,20 +51,23 @@ public class Encryptor {
         this.keyStore = keyStore;
     }
 
+    /**
+     * @param fis the file input stream of source file
+     * @param outputFile target file
+     * @param alias the alias of secret key to keystore
+     * @return true if no IOExceptions were thrown
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     boolean encryptFile(InputStream fis, File outputFile, final String alias)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, KeyStoreException,
             UnrecoverableEntryException {
 
-        //TODO: IV?
-        //byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        //IvParameterSpec ivspec = new IvParameterSpec(iv);
-
         final Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(alias));
         boolean success = true;
         CipherInputStream cis = null;
+        iv = cipher.getIV();
 
         try {
             if (!outputFile.getParentFile().exists()) {
@@ -105,6 +109,11 @@ public class Encryptor {
         return success;
     }
 
+    /**
+     * @param textToEncrypt
+     * @param alias the alias of secret key to keystore
+     * @return Encrypted text, encoded with Base64
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     String encryptText(String textToEncrypt, final String alias) throws NoSuchPaddingException,
             NoSuchAlgorithmException , NoSuchProviderException, InvalidAlgorithmParameterException,
@@ -113,6 +122,7 @@ public class Encryptor {
 
         final Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(alias));
+        iv = cipher.getIV();
 
         byte[] result = cipher.doFinal(textToEncrypt.getBytes("UTF-8"));
         return Base64.encodeToString(result, Base64.DEFAULT);
@@ -143,5 +153,14 @@ public class Encryptor {
         }
 
         return key;
+    }
+
+    /**
+     * for AES CBC mode cipher, an initialization vector(IV) is needed for both encryption and
+     * decryption. this method provides the reference of IV used in Encryption.
+     * @return IV
+     */
+    public byte[] getIv() {
+        return iv;
     }
 }

@@ -46,13 +46,22 @@ public class Decryptor {
 //        keyStore.load(null);
 //    }
 
-    boolean decryptFile(File inputFile, File outputFile, final String alias)
+    /**
+     *
+     * @param inputFile
+     * @param outputFile
+     * @param alias the alias of secret key to keystore
+     * @param iv initialization vector. provided from Encryptor class
+     * @return true if no IOExceptions were thrown
+     */
+    boolean decryptFile(File inputFile, File outputFile, final String alias, final byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, UnrecoverableEntryException
             , KeyStoreException {
 
         final Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(alias));
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
+        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(alias), ivSpec);
         boolean success = true;
 
         try {
@@ -93,13 +102,21 @@ public class Decryptor {
         return success;
     }
 
-    //TODO: IVs
-    String decryptText(String textToDecrypt, final String alias)  throws
+    /**
+     *
+     * @param textToDecrypt source text, encrypted with Base64
+     * @param alias the alias of secret key to keystore
+     * @param iv initialization vector. provided from Encryptor class
+     * @return decrypted text
+     */
+    String decryptText(String textToDecrypt, final String alias, final byte[] iv)  throws
             NoSuchAlgorithmException, NoSuchPaddingException, UnrecoverableEntryException,
-            KeyStoreException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+            KeyStoreException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException,
+            InvalidAlgorithmParameterException {
 
         final Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(alias));
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
+        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(alias), ivSpec);
 
         byte[] encryptedData = Base64.decode(textToDecrypt, Base64.DEFAULT);
         return new String(cipher.doFinal(encryptedData));
