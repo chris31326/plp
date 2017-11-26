@@ -62,10 +62,14 @@ public class Encryptor {
             cis = new CipherInputStream(fis, cipher);
             byte[] buffer = new byte[BUFFER_SIZE];
 
-            for (;cis.read(buffer) != -1;) {
-                fos.write(buffer, 0, cis.read(buffer));
-                fos.flush();
+            for (;;) {
+                final int n = cis.read(buffer);
+                if (n == -1) {
+                    break;
+                }
+                fos.write(buffer, 0, n);
             }
+            fos.flush();
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
