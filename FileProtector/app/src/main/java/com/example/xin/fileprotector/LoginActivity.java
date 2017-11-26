@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //Intent accountsIntent = new Intent(activity, UserListActivity.class);
             //accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
 
-            Intent accountsIntent = new Intent(activity, MainActivity.class);
+            Intent accountsIntent = new Intent(activity, TestActivity.class);
 //            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
             startActivity(accountsIntent);
@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-                Intent accountsIntent = new Intent(activity, MainActivity.class);
+                Intent accountsIntent = new Intent(activity, TestActivity.class);
                 accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
                 emptyInputEditText();
                 startActivity(accountsIntent);
