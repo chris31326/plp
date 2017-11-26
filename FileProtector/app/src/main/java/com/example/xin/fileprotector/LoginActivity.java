@@ -11,9 +11,6 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.Toast;
 
-/**
- * A login screen that offers login via email/password.
- */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
@@ -39,9 +36,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initObjects();
     }
 
-    /**
-     * This method is to initialize views
-     */
     private void initViews() {
         textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
@@ -96,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final String hashedPassword = hashing.getHexString(password.trim());
 
         if (databaseHelper.userTable.checkUser(email, hashedPassword)) {
-
             //Intent accountsIntent = new Intent(activity, UserListActivity.class);
             //accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
 

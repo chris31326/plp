@@ -23,7 +23,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="Main Page">
+            android:label="All Files">
         </activity>
     </application>
 

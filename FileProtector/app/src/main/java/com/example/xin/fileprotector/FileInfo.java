@@ -1,12 +1,12 @@
 package com.example.xin.fileprotector;
 
-public class File {
+public class FileInfo {
     private int id;
     private String encryptedFileName;
     private String originalPath;
     private boolean isEncrypted;
     private String key;
-    public enum FileType { Photo, Audio, Video, Document, Others }
+    public enum FileType {Photo, Audio, Video, Document, Others}
     private FileType type;
 
     public int getId() {

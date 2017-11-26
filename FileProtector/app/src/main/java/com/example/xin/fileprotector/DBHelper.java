@@ -8,21 +8,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Database Version
     private static final int DATABASE_VERSION = 2;
-
     // Database Name
     private static final String DATABASE_NAME = "DBHelper.db";
+    public UserTable userTable;
+    public FileTable fileTable;
 
-    public final UserTable userTable;
-    public final FileTable fileTable;
-
-    /**
-     * Constructor
-     *
-     * @param context
-     */
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
         userTable = new UserTable(this);
         fileTable = new FileTable(this);
     }

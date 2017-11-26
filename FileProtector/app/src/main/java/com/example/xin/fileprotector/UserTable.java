@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserTable {
+
+    private final SQLiteOpenHelper helper;
     // User table name
     private static final String TABLE_USER = "user";
-
     // User Table Columns names
     private static final String COLUMN_USER_ID = "user_id";
     private static final String COLUMN_USER_NAME = "user_name";
@@ -18,16 +19,14 @@ public class UserTable {
     private static final String COLUMN_USER_PASSWORD = "user_password";
 
     // create table sql query
-    private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
-            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT,"
-            + COLUMN_USER_PASSWORD + " TEXT" + ")";
+    private final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
+                        + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + COLUMN_USER_NAME + " TEXT,"
+                        + COLUMN_USER_EMAIL + " TEXT,"
+                        + COLUMN_USER_PASSWORD + " TEXT" + ")";
 
     // drop table sql query
-    private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
-
-    private final SQLiteOpenHelper helper;
+    private final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
 
     public UserTable(SQLiteOpenHelper helper) {
         this.helper = helper;
@@ -38,13 +37,10 @@ public class UserTable {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         //Drop User Table if exist
         db.execSQL(DROP_USER_TABLE);
-
         // Create tables again
         onCreate(db);
-
     }
 
     /**
@@ -78,11 +74,10 @@ public class UserTable {
                 COLUMN_USER_NAME,
                 COLUMN_USER_PASSWORD
         };
-        // sorting orders
-        String sortOrder =
-                COLUMN_USER_NAME + " ASC";
-        List<User> userList = new ArrayList<User>();
 
+        // sorting orders
+        String sortOrder = COLUMN_USER_NAME + " ASC";
+        List<User> userList = new ArrayList<>();
         SQLiteDatabase db = helper.getReadableDatabase();
 
         // query the user table
@@ -92,12 +87,12 @@ public class UserTable {
          * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
          */
         Cursor cursor = db.query(TABLE_USER, //Table to query
-                columns,    //columns to return
-                null,        //columns for the WHERE clause
-                null,        //The values for the WHERE clause
-                null,       //group the rows
-                null,       //filter by row groups
-                sortOrder); //The sort order
+                columns,                     //columns to return
+                null,               //columns for the WHERE clause
+                null,            //The values for the WHERE clause
+                null,                //group the rows
+                null,                 //filter by row groups
+                sortOrder);                  //The sort order
 
 
         // Traversing through all rows and adding to list
@@ -112,6 +107,7 @@ public class UserTable {
                 userList.add(user);
             } while (cursor.moveToNext());
         }
+
         cursor.close();
         db.close();
 
@@ -133,8 +129,7 @@ public class UserTable {
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
 
         // updating row
-        db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",
-                new String[]{String.valueOf(user.getId())});
+        db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(user.getId())});
         db.close();
     }
 
@@ -146,8 +141,7 @@ public class UserTable {
     public void deleteUser(User user) {
         SQLiteDatabase db = helper.getWritableDatabase();
         // delete user record by id
-        db.delete(TABLE_USER, COLUMN_USER_ID + " = ?",
-                new String[]{String.valueOf(user.getId())});
+        db.delete(TABLE_USER, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(user.getId())});
         db.close();
     }
 
@@ -158,16 +152,11 @@ public class UserTable {
      * @return true/false
      */
     public boolean checkUser(String email) {
-
         // array of columns to fetch
-        String[] columns = {
-                COLUMN_USER_ID
-        };
+        String[] columns = {COLUMN_USER_ID};
         SQLiteDatabase db = helper.getReadableDatabase();
-
         // selection criteria
         String selection = COLUMN_USER_EMAIL + " = ?";
-
         // selection argument
         String[] selectionArgs = {email};
 
@@ -181,9 +170,10 @@ public class UserTable {
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause
-                null,                       //group the rows
-                null,                      //filter by row groups
-                null);                      //The sort order
+                null,               //group the rows
+                null,                //filter by row groups
+                null);              //The sort order
+
         int cursorCount = cursor.getCount();
         cursor.close();
         db.close();
@@ -203,11 +193,8 @@ public class UserTable {
      * @return true/false
      */
     public boolean checkUser(String email, String password) {
-
         // array of columns to fetch
-        String[] columns = {
-                COLUMN_USER_ID
-        };
+        String[] columns = {COLUMN_USER_ID};
         SQLiteDatabase db = helper.getReadableDatabase();
         // selection criteria
         String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
@@ -216,23 +203,21 @@ public class UserTable {
         String[] selectionArgs = { email, password };
 
         // query user table with conditions
-        /**
-         * Here query function is used to fetch records from user table this function works like we use sql query.
-         * SQL query equivalent to this query function is
-         * SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
-         */
+        //Here query function is used to fetch records from user table this function works like we use sql query.
+        //SQL query equivalent to this query function is
+        //SELECT user_id FROM user WHERE user_email = 'jack@androidtutorialshub.com' AND user_password = 'qwerty';
         Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause
-                null,                       //group the rows
-                null,                       //filter by row groups
-                null);                      //The sort order
+                null,               //group the rows
+                null,                //filter by row groups
+                null);              //The sort order
 
         int cursorCount = cursor.getCount();
-
         cursor.close();
         db.close();
+
         if (cursorCount > 0) {
             return true;
         }
