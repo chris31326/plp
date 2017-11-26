@@ -39,9 +39,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initObjects();
     }
 
-    /**
-     * This method is to initialize views
-     */
     private void initViews() {
         textInputLayoutName = findViewById(R.id.textInputLayoutName);
         textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
@@ -92,8 +89,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final String name = textInputEditTextName.getText().toString();
         final String email = textInputEditTextEmail.getText().toString();
         final String password = textInputEditTextPassword.getText().toString();
-        final Hashing hashing = new Hashing();
-        final String hashedPassword = hashing.getHexString(password.trim());
+        final String hashedPassword = Hashing.getHexString(password.trim());
 
         if (!databaseHelper.userTable.checkUser(email.trim())) {
 
@@ -108,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
 
+        // TODO: change delay
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -141,9 +138,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
-    /**
-     * This method is to validate the input text fields and post data to SQLite
-     */
     private boolean postDataToSQLite() {
 
         boolean valid = true;
@@ -168,9 +162,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return valid;
     }
 
-    /**
-     * This method is to empty all input edit text
-     */
     private void emptyInputEditText() {
         textInputEditTextName.setText(null);
         textInputEditTextEmail.setText(null);

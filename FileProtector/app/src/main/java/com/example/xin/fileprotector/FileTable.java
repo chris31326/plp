@@ -11,7 +11,7 @@ public class FileTable {
 
     private final SQLiteOpenHelper helper;
 
-    private static final String FILE_TABLE_NAME = "Files";
+    private static final String FILE_TABLE_NAME = "files";
 
     private static final String COLUMN_FILE_ID = "file_id";
     private static final String COLUMN_EN_FILE_NAME = "encrypted_file_name";
@@ -26,8 +26,8 @@ public class FileTable {
                         + COLUMN_EN_FILE_NAME + " TEXT,"
                         + COLUMN_ORIGINAL_PATH + " TEXT,"
                         + COLUMN_FILE_TYPE + " TEXT,"
-                        + COLUMN_KEY + "TEXT,"
-                        + COLUMN_IS_ENCRYPTED + "INTEGER" + ")";
+                        + COLUMN_KEY + " TEXT,"
+                        + COLUMN_IS_ENCRYPTED + " INTEGER" + ")";
 
     private final String DROP_FILE_TABLE_QUERY = "DROP TABLE IF EXISTS " + FILE_TABLE_NAME;
 

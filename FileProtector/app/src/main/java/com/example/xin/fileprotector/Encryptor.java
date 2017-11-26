@@ -1,7 +1,5 @@
 package com.example.xin.fileprotector;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
@@ -10,12 +8,10 @@ import android.support.annotation.RequiresApi;
 import android.util.Base64;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -32,8 +28,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.IvParameterSpec;
 
 public class Encryptor {
     private static final String ALGORITHM = "AES/CBC/PKCS7Padding";
@@ -47,12 +41,6 @@ public class Encryptor {
         this.keyStore = keyStore;
     }
 
-    /**
-     * @param fis the file input stream of source file
-     * @param outputFile target file
-     * @param alias the alias of secret key to keystore
-     * @return true if no IOExceptions were thrown
-     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     boolean encryptFile(InputStream fis, File outputFile, final String alias)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
@@ -79,13 +67,16 @@ public class Encryptor {
                 fos.flush();
             }
 
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             e.printStackTrace();
             success = false;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             success = false;
-        } finally {
+        }
+        finally {
             if (fos != null) {
                 try {
                     fos.close();
@@ -105,11 +96,6 @@ public class Encryptor {
         return success;
     }
 
-    /**
-     * @param textToEncrypt
-     * @param alias the alias of secret key to keystore
-     * @return Encrypted text, encoded with Base64
-     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     String encryptText(String textToEncrypt, final String alias) throws NoSuchPaddingException,
             NoSuchAlgorithmException , NoSuchProviderException, InvalidAlgorithmParameterException,
@@ -144,18 +130,14 @@ public class Encryptor {
                             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
                             .build());
             key = keyGenerator.generateKey();
-        } else {
+        }
+        else {
             return ((KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null)).getSecretKey();
         }
 
         return key;
     }
 
-    /**
-     * for AES CBC mode cipher, an initialization vector(IV) is needed for both encryption and
-     * decryption. this method provides the reference of IV used in Encryption.
-     * @return IV
-     */
     public byte[] getIv() {
         return iv;
     }

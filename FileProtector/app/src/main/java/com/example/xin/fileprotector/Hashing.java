@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Hashing {
 
-    public String getHexString(String key) {
+    public static String getHexString(String key) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(key.getBytes());

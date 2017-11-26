@@ -86,14 +86,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         final String email = textInputEditTextEmail.getText().toString().trim();
         final String password = textInputEditTextPassword.getText().toString();
-        final Hashing hashing = new Hashing();
-        final String hashedPassword = hashing.getHexString(password.trim());
+        final String hashedPassword = Hashing.getHexString(password.trim());
 
         if (databaseHelper.userTable.checkUser(email, hashedPassword)) {
             //Intent accountsIntent = new Intent(activity, UserListActivity.class);
             //accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
 
-            Intent accountsIntent = new Intent(activity, TestActivity.class);
+            Intent accountsIntent = new Intent(activity, MainActivity.class);
 //            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
             startActivity(accountsIntent);
@@ -117,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-                Intent accountsIntent = new Intent(activity, TestActivity.class);
+                Intent accountsIntent = new Intent(activity, MainActivity.class);
                 accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
                 emptyInputEditText();
                 startActivity(accountsIntent);
