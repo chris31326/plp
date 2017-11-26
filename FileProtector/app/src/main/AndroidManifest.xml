@@ -20,18 +20,11 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".MainActivity"
-            android:label="All Files">
-        </activity>
-
-        <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:label="All Files"></activity>
+        <activity android:name=".FileListActivity"></activity>
     </application>
 
 </manifest>

@@ -5,8 +5,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         fab.bringToFront();
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         FileInfo fileInfo = new FileInfo();
 
@@ -87,27 +85,23 @@ public class MainActivity extends AppCompatActivity {
                 fileInfo.setOriginalPath(sourceFile.getAbsolutePath());
                 fileInfo.setType(FileInfo.FileType.Photo);
                 fileInfo.setKey(new String(Hex.encodeHex(encryptor.getIv())));
+
                 dbHelper.fileTable.addFile(fileInfo);
             }
         }
     }
 
-    public void onClickGetFilesList(View view) {
-        String[] fList = fileList();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0, len = fList.length; i < len; i++) {
-            sb.append(fList[i]);
-            sb.append("\n");
-            System.out.println(fList[i]);
-        }
-        Toast.makeText(this, sb.toString(), Toast.LENGTH_SHORT).show();
-    }
-
-    public void onClickViewAllFiles(View view) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    public void onClickViewAllFiles(final View view) {
+        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         intent.setType("*/*");//FILE TYPE, */*stands for any type
         startActivityForResult(intent,1);
+    }
+
+    public void onClickFolderPhoto(final View view) {
+        final Intent intent = new Intent(this, FileListActivity.class);
+        intent.putExtra("FileType", FileInfo.FileType.Photo.toString());
+        startActivity(intent);
     }
 }

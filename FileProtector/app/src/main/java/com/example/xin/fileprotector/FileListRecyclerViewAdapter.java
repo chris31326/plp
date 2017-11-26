@@ -5,67 +5,55 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.example.xin.fileprotector.FileListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 
 public class FileListRecyclerViewAdapter extends RecyclerView.Adapter<FileListRecyclerViewAdapter.ViewHolder> {
 
-    //FileInfo file1 = new FileInfo(00, "NEW FILE", "PATH", true, "KEY", FileInfo.FileType.Photo);
-    private final List<FileInfo> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<FileInfo> files;
+    private ItemClickListener clickListener;
 
-    public FileListRecyclerViewAdapter(List<FileInfo> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
-        mListener = listener;
+    public FileListRecyclerViewAdapter(final List<FileInfo> files, final ItemClickListener clickListener) {
+        this.files = files;
+        this.clickListener = clickListener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_item, parent, false);
-        return new ViewHolder(view);
+
+        return new ViewHolder(view, clickListener);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getEncryptedFileName());
-        holder.mContentView.setText(mValues.get(position).getType());
-
-//        holder.mView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (null != mListener) {
-//                    // Notify the active callbacks interface (the activity, if the
-//                    // fragment is attached to one) that an item has been selected.
-//                    mListener.onListFragmentInteraction(holder.mItem);
-//                }
-//            }
-//        });
+        holder.item = files.get(position);
+        holder.contentView.setText(files.get(position).getEncryptedFileName());
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return files.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public FileInfo mItem;
+        public final TextView contentView;
+        public FileInfo item;
 
-        public ViewHolder(View view) {
+        public ViewHolder(final View view, final ItemClickListener listener) {
             super(view);
-            mView = view;
-            mIdView = view.findViewById(R.id.id);
-            mContentView = view.findViewById(R.id.content);
-        }
+            contentView = view.findViewById(R.id.content);
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(view, getAdapterPosition());
+                    }
+                }
+            });
         }
     }
 }

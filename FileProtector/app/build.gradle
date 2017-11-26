@@ -34,5 +34,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:design:26.1.0'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    compile 'commons-codec:commons-codec:1.10'
+    compile 'commons-codec:commons-codec:1.11'
 }

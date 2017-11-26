@@ -9,13 +9,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -42,14 +40,6 @@ public class Decryptor {
 //        keyStore.load(null);
 //    }
 
-    /**
-     *
-     * @param inputFile
-     * @param outputFile
-     * @param alias the alias of secret key to keystore
-     * @param iv initialization vector. provided from Encryptor class
-     * @return true if no IOExceptions were thrown
-     */
     boolean decryptFile(File inputFile, File outputFile, final String alias, final byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, UnrecoverableEntryException
@@ -98,13 +88,6 @@ public class Decryptor {
         return success;
     }
 
-    /**
-     *
-     * @param textToDecrypt source text, encrypted with Base64
-     * @param alias the alias of secret key to keystore
-     * @param iv initialization vector. provided from Encryptor class
-     * @return decrypted text
-     */
     String decryptText(String textToDecrypt, final String alias, final byte[] iv)  throws
             NoSuchAlgorithmException, NoSuchPaddingException, UnrecoverableEntryException,
             KeyStoreException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException,

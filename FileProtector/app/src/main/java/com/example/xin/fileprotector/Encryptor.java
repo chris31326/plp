@@ -37,12 +37,12 @@ public class Encryptor {
     private FileOutputStream fos = null;
     private KeyStore keyStore = null;
 
-    Encryptor(KeyStore keyStore) {
+    Encryptor(final KeyStore keyStore) {
         this.keyStore = keyStore;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    boolean encryptFile(InputStream fis, File outputFile, final String alias)
+    boolean encryptFile(final InputStream fis, final File outputFile, final String alias)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, KeyStoreException,
             UnrecoverableEntryException {
@@ -61,12 +61,11 @@ public class Encryptor {
             fos = new FileOutputStream(outputFile);
             cis = new CipherInputStream(fis, cipher);
             byte[] buffer = new byte[BUFFER_SIZE];
-            int n = 0;
-            while ((n = cis.read(buffer)) != -1) {
-                fos.write(buffer, 0, n);
+
+            for (;cis.read(buffer) != -1;) {
+                fos.write(buffer, 0, cis.read(buffer));
                 fos.flush();
             }
-
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
