@@ -10,19 +10,18 @@ import java.util.List;
 public class FileTable {
 
     private final SQLiteOpenHelper helper;
-    // file table name
+
     private static final String FILE_TABLE_NAME = "Files";
-    // file Table Columns names
+
     private static final String COLUMN_FILE_ID = "file_id";
     private static final String COLUMN_EN_FILE_NAME = "encrypted_file_name";
     private static final String COLUMN_ORIGINAL_PATH = "original_path";
     private static final String COLUMN_FILE_TYPE = "file_type";
     private static final String COLUMN_KEY = "key";
-    //true = 1, false = 0
+    /// true = 1, false = 0
     private static final String COLUMN_IS_ENCRYPTED = "is_encrypted";
 
-    // create table sql query
-    private final String CREATE_FILE_TABLE = "CREATE TABLE " + FILE_TABLE_NAME + "("
+    private final String CREATE_FILE_TABLE_QUERY = "CREATE TABLE " + FILE_TABLE_NAME + "("
                         + COLUMN_FILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                         + COLUMN_EN_FILE_NAME + " TEXT,"
                         + COLUMN_ORIGINAL_PATH + " TEXT,"
@@ -30,22 +29,18 @@ public class FileTable {
                         + COLUMN_KEY + "TEXT,"
                         + COLUMN_IS_ENCRYPTED + "INTEGER" + ")";
 
-    // drop table sql query
-    private final String DROP_file_TABLE = "DROP TABLE IF EXISTS " + FILE_TABLE_NAME;
+    private final String DROP_FILE_TABLE_QUERY = "DROP TABLE IF EXISTS " + FILE_TABLE_NAME;
 
     public FileTable(SQLiteOpenHelper helper) {
         this.helper = helper;
     }
 
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_FILE_TABLE);
+        db.execSQL(CREATE_FILE_TABLE_QUERY);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //Drop file Table if exist
-        db.execSQL(DROP_file_TABLE);
-
-        // Create tables again
+        db.execSQL(DROP_FILE_TABLE_QUERY);
         onCreate(db);
     }
 

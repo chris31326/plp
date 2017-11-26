@@ -5,20 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.example.xin.fileprotector.FileListFragment.OnListFragmentInteractionListener;
-import com.example.xin.fileprotector.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class FileListRecyclerViewAdapter extends RecyclerView.Adapter<FileListRecyclerViewAdapter.ViewHolder> {
 
-    FileInfo file1 = new FileInfo(00, "NEW FILE", "PATH", true, "KEY", FileInfo.FileType.Photo);
+    //FileInfo file1 = new FileInfo(00, "NEW FILE", "PATH", true, "KEY", FileInfo.FileType.Photo);
     private final List<FileInfo> mValues;
     private final OnListFragmentInteractionListener mListener;
 
