@@ -6,7 +6,6 @@ public class FileInfo {
     private String originalPath;
     private boolean isEncrypted;
     private String key;
-    public enum FileType {Photo, Audio, Video, Document, Others}
     private FileType type;
 
     public int getId() {

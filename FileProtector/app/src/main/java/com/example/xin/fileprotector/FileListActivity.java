@@ -47,7 +47,7 @@ public class FileListActivity extends AppCompatActivity {
     private void getDataFromSQLite() {
         if (!dbHelper.fileTable.tableEmpty()) {
                 fileList.clear();
-                fileList.addAll(dbHelper.fileTable.getFileByType(FileInfo.FileType.valueOf(fileType)));
+                fileList.addAll(dbHelper.fileTable.getFileByType(FileType.valueOf(fileType)));
         }
     }
 

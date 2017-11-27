@@ -85,7 +85,7 @@ public class FileTable {
                 fileInfo.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_ID))));
                 fileInfo.setEncryptedFileName(cursor.getString(cursor.getColumnIndex(COLUMN_EN_FILE_NAME)));
                 fileInfo.setOriginalPath(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_PATH)));
-                fileInfo.setType(FileInfo.FileType.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_TYPE))));
+                fileInfo.setType(FileType.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_TYPE))));
                 fileInfo.setKey(cursor.getString(cursor.getColumnIndex(COLUMN_KEY)));
                 fileInfo.setEncryptionStatus(1 == cursor.getColumnIndex(COLUMN_IS_ENCRYPTED));
 
@@ -118,7 +118,7 @@ public class FileTable {
         db.close();
     }
 
-    public List<FileInfo> getFileByType(final FileInfo.FileType type) {
+    public List<FileInfo> getFileByType(final FileType type) {
         final String[] columns = {
                 COLUMN_FILE_ID,
                 COLUMN_ORIGINAL_PATH,
@@ -148,7 +148,7 @@ public class FileTable {
                 fileInfo.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_ID))));
                 fileInfo.setEncryptedFileName(cursor.getString(cursor.getColumnIndex(COLUMN_EN_FILE_NAME)));
                 fileInfo.setOriginalPath(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_PATH)));
-                fileInfo.setType(FileInfo.FileType.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_TYPE))));
+                fileInfo.setType(FileType.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_TYPE))));
                 fileInfo.setKey(cursor.getString(cursor.getColumnIndex(COLUMN_KEY)));
                 fileInfo.setEncryptionStatus(1 == cursor.getColumnIndex(COLUMN_IS_ENCRYPTED));
                 fileInfoList.add(fileInfo);
@@ -190,7 +190,7 @@ public class FileTable {
                 fileInfo.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_ID))));
                 fileInfo.setEncryptedFileName(cursor.getString(cursor.getColumnIndex(COLUMN_EN_FILE_NAME)));
                 fileInfo.setOriginalPath(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_PATH)));
-                fileInfo.setType(FileInfo.FileType.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_TYPE))));
+                fileInfo.setType(FileType.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_TYPE))));
                 fileInfo.setKey(cursor.getString(cursor.getColumnIndex(COLUMN_KEY)));
                 fileInfo.setEncryptionStatus(1 == cursor.getColumnIndex(COLUMN_IS_ENCRYPTED));
 

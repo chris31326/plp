@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        final File destFile = new java.io.File(getFilesDir(), sourceFile.getName() + ".plp");
+        final File destFile = new File(getFilesDir(), sourceFile.getName() + ".plp");
 
         try {
             final boolean success = encryptor.encryptFile(is, destFile, ALIAS);
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         final FileInfo fileInfo = new FileInfo();
         fileInfo.setEncryptedFileName(destFile.getAbsolutePath());
         fileInfo.setOriginalPath(sourceFile.getAbsolutePath());
-        fileInfo.setType(FileInfo.FileType.Photo);
+        fileInfo.setType(FileType.fromFile(sourceFile));
         fileInfo.setKey(new String(Hex.encodeHex(encryptor.getIv())));
 
         dbHelper.fileTable.addFile(fileInfo);
@@ -133,13 +133,14 @@ public class MainActivity extends AppCompatActivity {
             FilePickerBuilder.getInstance()
                     .enableImagePicker(true)
                     .enableVideoPicker(true)
+                    .setSelectedFiles(new ArrayList<>())
                     .pickPhoto(this);
         }
     }
 
     public void onClickFolderPhoto(final View view) {
         final Intent intent = new Intent(this, FileListActivity.class);
-        intent.putExtra("FileType", FileInfo.FileType.Photo.toString());
+        intent.putExtra("FileType", FileType.Photo.toString());
         startActivity(intent);
     }
 }
