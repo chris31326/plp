@@ -10,8 +10,9 @@
         android:layout_height="60dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="15dp"
-        android:background="@color/colorLightGrey"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorYellow"
         android:textAlignment="viewStart"
-        android:textSize="14sp"/>
+        android:textSize="16sp"
+        android:padding="10dp"/>
 </LinearLayout>

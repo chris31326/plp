@@ -4,7 +4,7 @@ import java.io.File;
 
 public enum FileType {
     Photo(new String[]{".jpg", ".jpeg", ".png", ".gif"}),
-    Audio(new String[]{".mp3", ".wav", ".aac", ".m4a", ".wma"}),
+    Audio(new String[]{".mp3", ".wav", ".aac", ".m4a", ".wma", ".ogg"}),
     Video(new String[]{".avi", ".mp4", ".mkv", ".webp"}),
     Document(new String[]{".doc", ".docx", ".xls", ".xlsx", ".pdf", ".txt"}),
     Others(new String[]{});

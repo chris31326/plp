@@ -6,10 +6,8 @@
     android:name="com.example.xin.fileprotector.FileListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="30dp"
-    android:layout_marginBottom="15dp"
+    android:padding="10dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.xin.fileprotector.FileListFragment"
-    tools:listitem="@layout/fragment_item" />
+    tools:context="com.example.xin.fileprotector.FileListActivity"
+    tools:listitem="@layout/fragment_item"
+    android:background="@color/colorBackground"/>
