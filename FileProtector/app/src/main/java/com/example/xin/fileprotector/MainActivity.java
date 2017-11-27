@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "INSUFFICIENT PERMISSIONS", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "INSUFFICIENT PERMISSIONS", Toast.LENGTH_LONG).show();
         } else {
             FilePickerBuilder.getInstance()
                     .enableImagePicker(true)

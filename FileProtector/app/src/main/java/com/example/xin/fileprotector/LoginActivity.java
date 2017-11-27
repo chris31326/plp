@@ -75,15 +75,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        appCompatButtonLogin.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setTitle("Please wait");
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.show();
-
         final String email = textInputEditTextEmail.getText().toString().trim();
         final String password = textInputEditTextPassword.getText().toString();
         final String hashedPassword = Hashing.getHexString(password.trim());
@@ -99,13 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 //            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
-            new android.os.Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    onLoginSuccess();
-                    progressDialog.dismiss();
-                }
-            },3000);
+            onLoginSuccess();
         }
         else {
             onLoginFailed();
@@ -134,13 +119,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void onLoginSuccess() {
-        appCompatButtonLogin.setEnabled(true);
         finish();
     }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-        appCompatButtonLogin.setEnabled(true);
     }
 
     private boolean verifyFromSQLite() {
