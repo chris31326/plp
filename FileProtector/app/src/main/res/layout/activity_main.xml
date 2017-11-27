@@ -99,7 +99,7 @@
     </GridLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/add_photos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -107,6 +107,17 @@
         app:backgroundTint="@color/colorTopBar"
         android:tint="@color/colorPrimary"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:onClick="onClickViewAllFiles"/>
+        android:onClick="onClickAddPhotos" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_files"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/colorTopBar"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:onClick="onClickAddFiles" />
 
 </FrameLayout>

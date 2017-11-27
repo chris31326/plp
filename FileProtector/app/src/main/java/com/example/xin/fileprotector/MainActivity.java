@@ -1,14 +1,17 @@
 package com.example.xin.fileprotector;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
+
+import com.aditya.filebrowser.Constants;
+import com.aditya.filebrowser.FileChooser;
 
 import org.apache.commons.codec.binary.Hex;
 
@@ -33,7 +36,7 @@ import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final int ADD_FILES_REQUEST_CODE = 7;
     private Encryptor encryptor;
     private KeyStore keyStore = null;
     private static final String ALIAS = "hellohello";//TODO:For test only
@@ -54,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         encryptor = new Encryptor(keyStore);
         dbHelper = new DBHelper(this);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.bringToFront();
+        findViewById(R.id.add_photos).bringToFront();
+        findViewById(R.id.add_files).bringToFront();
     }
 
     @Override
@@ -63,13 +66,16 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<String> files = new ArrayList<>();
         switch (requestCode) {
         case FilePickerConst.REQUEST_CODE_PHOTO:
-            if (resultCode == Activity.RESULT_OK && data != null) {
+            if (resultCode == RESULT_OK && data != null) {
                 files.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
             }
             break;
-        case FilePickerConst.REQUEST_CODE_DOC:
-            if (resultCode == Activity.RESULT_OK && data != null) {
-                files.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
+        case ADD_FILES_REQUEST_CODE:
+            if (resultCode == RESULT_OK && data != null) {
+                final ArrayList<Uri> selectedFiles = data.getParcelableArrayListExtra(Constants.SELECTED_ITEMS);
+                for (final Uri fileUri : selectedFiles) {
+                    files.add(fileUri.getPath());
+                }
             }
             break;
         }
@@ -100,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             final boolean success = encryptor.encryptFile(is, destFile, ALIAS);
             if (success) {
-                Toast.makeText(this, "FILE ENCRYPTED", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "FILE(S) ENCRYPTED", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "FAIL: " +
                         sourceFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
@@ -122,19 +128,38 @@ public class MainActivity extends AppCompatActivity {
         dbHelper.fileTable.addFile(fileInfo);
     }
 
-    public void onClickViewAllFiles(final View view) {
+    public void onClickAddPhotos(final View view) {
+        if (!checkAndGetPermissions()) {
+            return;
+        }
+
+        FilePickerBuilder.getInstance()
+                .enableImagePicker(true)
+                .enableVideoPicker(true)
+                .setSelectedFiles(new ArrayList<>())
+                .pickPhoto(this);
+    }
+
+    public void onClickAddFiles(final View view) {
+        if (!checkAndGetPermissions()) {
+            return;
+        }
+
+        final Intent intent = new Intent(this, FileChooser.class);
+        intent.putExtra(Constants.SELECTION_MODE, Constants.SELECTION_MODES.MULTIPLE_SELECTION.ordinal());
+        startActivityForResult(intent, ADD_FILES_REQUEST_CODE);
+    }
+
+    private boolean checkAndGetPermissions() {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
         }
 
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "INSUFFICIENT PERMISSIONS", Toast.LENGTH_LONG).show();
+            return false;
         } else {
-            FilePickerBuilder.getInstance()
-                    .enableImagePicker(true)
-                    .enableVideoPicker(true)
-                    .setSelectedFiles(new ArrayList<>())
-                    .pickPhoto(this);
+            return true;
         }
     }
 
