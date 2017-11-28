@@ -14,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return dbhelper;
     }
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "DBHelper.db";
     public UserTable userTable;
     public FileTable fileTable;

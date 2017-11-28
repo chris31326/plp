@@ -17,13 +17,13 @@ public class UserTable {
     private static final String COLUMN_USER_EMAIL = "user_email";
     private static final String COLUMN_USER_PASSWORD = "user_password";
 
-    private final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
+    private static final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
                         + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                         + COLUMN_USER_NAME + " TEXT,"
-                        + COLUMN_USER_EMAIL + " TEXT,"
+                        + COLUMN_USER_EMAIL + " TEXT UNIQUE,"
                         + COLUMN_USER_PASSWORD + " TEXT" + ")";
 
-    private final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
+    private static final String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
 
     public UserTable(final SQLiteOpenHelper helper) {
         this.helper = helper;
@@ -51,44 +51,6 @@ public class UserTable {
         db.close();
     }
 
-    public List<User> getAllUser() {
-        // array of columns to fetch
-        final String[] columns = {
-                COLUMN_USER_ID,
-                COLUMN_USER_EMAIL,
-                COLUMN_USER_NAME,
-                COLUMN_USER_PASSWORD
-        };
-
-        final SQLiteDatabase db = helper.getReadableDatabase();
-        final String sortOrder = COLUMN_USER_NAME + " ASC";
-        List<User> userList = new ArrayList<>();
-
-        Cursor cursor = db.query(TABLE_USER, //Table to query
-                columns,                     //columns to return
-                null,               //columns for the WHERE clause
-                null,            //The values for the WHERE clause
-                null,                //group the rows
-                null,                 //filter by row groups
-                sortOrder);                  //The sort order
-
-        if (cursor.moveToFirst()) {
-            do {
-                User user = new User();
-                user.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID))));
-                user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
-                user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
-                user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
-                userList.add(user);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-
-        return userList;
-    }
-
     public void updateUser(final User user) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
@@ -98,13 +60,6 @@ public class UserTable {
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
 
         db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(user.getId())});
-        db.close();
-    }
-
-    public void deleteUser(final User user) {
-        final SQLiteDatabase db = helper.getWritableDatabase();
-
-        db.delete(TABLE_USER, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(user.getId())});
         db.close();
     }
 

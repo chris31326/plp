@@ -27,7 +27,7 @@ public class FileTable {
     private static final String CREATE_FILE_TABLE_QUERY = "CREATE TABLE " + FILE_TABLE_NAME + "("
                         + COLUMN_FILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                         + COLUMN_EN_FILE_NAME + " TEXT,"
-                        + COLUMN_ORIGINAL_PATH + " TEXT,"
+                        + COLUMN_ORIGINAL_PATH + " TEXT UNIQUE,"
                         + COLUMN_FILE_TYPE + " TEXT,"
                         + COLUMN_KEY + " TEXT,"
                         + COLUMN_IS_ENCRYPTED + " INTEGER" + ")";
@@ -61,46 +61,6 @@ public class FileTable {
         db.close();
     }
 
-    public List<FileInfo> getAllFile() {
-        final String[] columns = {
-                COLUMN_FILE_ID,
-                COLUMN_ORIGINAL_PATH,
-                COLUMN_EN_FILE_NAME,
-                COLUMN_FILE_TYPE,
-                COLUMN_KEY,
-                COLUMN_IS_ENCRYPTED
-        };
-
-        final SQLiteDatabase db = helper.getReadableDatabase();
-        List<FileInfo> fileInfoList = new ArrayList<>();
-
-        Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
-                columns,                          //columns to return
-                null,                    //columns for the WHERE clause
-                null,                 //The values for the WHERE clause
-                COLUMN_FILE_TYPE,                 //group the rows
-                null,                      //filter by row groups
-                null);                    //The sort order
-
-        if (cursor.moveToFirst()) {
-            do {
-                FileInfo fileInfo = new FileInfo();
-                fileInfo.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_ID))));
-                fileInfo.setEncryptedFileName(cursor.getString(cursor.getColumnIndex(COLUMN_EN_FILE_NAME)));
-                fileInfo.setOriginalPath(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_PATH)));
-                fileInfo.setType(FileType.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_TYPE))));
-                fileInfo.setKey(cursor.getString(cursor.getColumnIndex(COLUMN_KEY)));
-                fileInfo.setEncryptionStatus(1 == cursor.getColumnIndex(COLUMN_IS_ENCRYPTED));
-
-                fileInfoList.add(fileInfo);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        return fileInfoList;
-    }
-
     public void updateFile(final FileInfo fileInfo) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
@@ -112,12 +72,6 @@ public class FileTable {
         values.put(COLUMN_IS_ENCRYPTED, (fileInfo.isEncrypted() ? 1 : 0));
 
         db.update(FILE_TABLE_NAME, values, COLUMN_FILE_ID + " = ?", new String[]{ String.valueOf(fileInfo.getId()) });
-        db.close();
-    }
-
-    public void deletefile(final FileInfo fileInfo) {
-        final SQLiteDatabase db = helper.getWritableDatabase();
-        db.delete(FILE_TABLE_NAME, COLUMN_FILE_ID + " = ?", new String[]{ String.valueOf(fileInfo.getId()) });
         db.close();
     }
 
