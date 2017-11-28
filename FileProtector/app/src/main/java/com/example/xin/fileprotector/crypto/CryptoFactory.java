@@ -7,6 +7,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 public class CryptoFactory {
+    public static final String ALIAS = "hellohello";//TODO:For test only
+
     private final static KeyStore keyStore;
 
     public final static Encryptor encryptor;

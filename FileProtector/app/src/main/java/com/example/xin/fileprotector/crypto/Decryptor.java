@@ -26,24 +26,19 @@ import javax.crypto.spec.IvParameterSpec;
 public class Decryptor {
     private static final String ALGORITHM = "AES/CBC/PKCS7Padding";
     private static final int BUFFER_SIZE = 1024;
-    private FileInputStream fis = null;
-    private FileOutputStream fos = null;
-    private KeyStore keyStore;
+    private final KeyStore keyStore;
 
-    public Decryptor(KeyStore keyStore)  {
+    public Decryptor(final KeyStore keyStore)  {
         this.keyStore = keyStore;
     }
-
-//    private void initKeyStore() throws KeyStoreException, NoSuchAlgorithmException,
-//            CertificateException, IOException {
-//        keyStore = KeyStore.getInstance("AndroidKeyStore");
-//        keyStore.load(null);
-//    }
 
     public boolean decryptFile(File inputFile, File outputFile, final String alias, final byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, UnrecoverableEntryException
             , KeyStoreException {
+
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
 
         final Cipher cipher = Cipher.getInstance(ALGORITHM);
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
@@ -88,16 +83,16 @@ public class Decryptor {
         return success;
     }
 
-    String decryptText(String textToDecrypt, final String alias, final byte[] iv)  throws
+    public String decryptText(final String textToDecrypt, final String alias, final byte[] iv)  throws
             NoSuchAlgorithmException, NoSuchPaddingException, UnrecoverableEntryException,
             KeyStoreException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException,
             InvalidAlgorithmParameterException {
 
         final Cipher cipher = Cipher.getInstance(ALGORITHM);
-        IvParameterSpec ivSpec = new IvParameterSpec(iv);
+        final IvParameterSpec ivSpec = new IvParameterSpec(iv);
         cipher.init(Cipher.DECRYPT_MODE, getSecretKey(alias), ivSpec);
 
-        byte[] encryptedData = Base64.decode(textToDecrypt, Base64.DEFAULT);
+        final byte[] encryptedData = Base64.decode(textToDecrypt, Base64.DEFAULT);
         return new String(cipher.doFinal(encryptedData));
     }
 

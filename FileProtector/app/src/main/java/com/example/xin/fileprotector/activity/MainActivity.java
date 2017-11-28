@@ -42,7 +42,6 @@ import droidninja.filepicker.FilePickerConst;
 public class MainActivity extends AppCompatActivity {
     private static final int ADD_FILES_REQUEST_CODE = 7;
     private Encryptor encryptor;
-    private static final String ALIAS = "hellohello";//TODO:For test only
     private DBHelper dbHelper;
 
     @Override
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         final File destFile = new File(getFilesDir(), destFileName);
 
         try {
-            final boolean success = encryptor.encryptFile(is, destFile, ALIAS);
+            final boolean success = encryptor.encryptFile(is, destFile, CryptoFactory.ALIAS);
             if (success) {
                 Toast.makeText(this, "FILE(S) ENCRYPTED", Toast.LENGTH_SHORT).show();
             } else {

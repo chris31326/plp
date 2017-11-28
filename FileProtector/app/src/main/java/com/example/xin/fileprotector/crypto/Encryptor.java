@@ -32,10 +32,8 @@ import javax.crypto.SecretKey;
 public class Encryptor {
     private static final String ALGORITHM = "AES/CBC/PKCS7Padding";
     private static final int BUFFER_SIZE = 1024;
-    //private FileInputStream fis = null;
     private byte iv[];
-    private FileOutputStream fos = null;
-    private KeyStore keyStore = null;
+    private final KeyStore keyStore;
 
     public Encryptor(final KeyStore keyStore) {
         this.keyStore = keyStore;
@@ -46,6 +44,8 @@ public class Encryptor {
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, KeyStoreException,
             UnrecoverableEntryException {
+
+        FileOutputStream fos = null;
 
         final Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(alias));
@@ -100,7 +100,7 @@ public class Encryptor {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    String encryptText(String textToEncrypt, final String alias) throws NoSuchPaddingException,
+    public String encryptText(final String textToEncrypt, final String alias) throws NoSuchPaddingException,
             NoSuchAlgorithmException , NoSuchProviderException, InvalidAlgorithmParameterException,
             KeyStoreException, InvalidKeyException, UnrecoverableEntryException,
             UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
@@ -109,7 +109,7 @@ public class Encryptor {
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(alias));
         iv = cipher.getIV();
 
-        byte[] result = cipher.doFinal(textToEncrypt.getBytes("UTF-8"));
+        final byte[] result = cipher.doFinal(textToEncrypt.getBytes("UTF-8"));
         return Base64.encodeToString(result, Base64.DEFAULT);
     }
 
