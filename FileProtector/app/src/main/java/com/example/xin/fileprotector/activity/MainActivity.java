@@ -107,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        final File destFile = new File(getFilesDir(), sourceFile.getName() + ".plp");
+        final String destFileName = sourceFile.getName() + "." + System.currentTimeMillis() + ".plp";
+        final File destFile = new File(getFilesDir(), destFileName);
 
         try {
             final boolean success = encryptor.encryptFile(is, destFile, ALIAS);
