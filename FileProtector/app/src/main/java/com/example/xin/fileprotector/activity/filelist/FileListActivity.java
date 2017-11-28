@@ -29,7 +29,7 @@ public class FileListActivity extends AppCompatActivity {
 
         fileType = getIntent().getExtras().getString("FileType");
         fileList = new ArrayList<>();
-        dbHelper = new DBHelper(this);
+        dbHelper = DBHelper.getInstance(this);
 
         setContentView(R.layout.fragment_item_list);
 
@@ -39,9 +39,7 @@ public class FileListActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        ItemClickListener listener = (view, position) -> {
-            Toast.makeText(this, "Position " + position, Toast.LENGTH_SHORT).show();
-        };
+        final ItemClickListener listener = new DecryptAndView(this);
 
         adapter = new FileListRecyclerViewAdapter(fileList, listener);
         recyclerView.setAdapter(adapter);

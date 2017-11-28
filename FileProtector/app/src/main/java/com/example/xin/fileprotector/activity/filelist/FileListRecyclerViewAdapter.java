@@ -31,8 +31,9 @@ public class FileListRecyclerViewAdapter extends RecyclerView.Adapter<FileListRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.item = files.get(position);
-        holder.contentView.setText(files.get(position).getOriginalPath());
+        final FileInfo fileInfo = files.get(position);
+        holder.item = fileInfo;
+        holder.contentView.setText(fileInfo.getOriginalPath());
     }
 
     @Override
@@ -50,11 +51,8 @@ public class FileListRecyclerViewAdapter extends RecyclerView.Adapter<FileListRe
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    final int pos = getAdapterPosition();
-                    if (pos != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(view, getAdapterPosition());
-                    }
+                public void onClick(final View view) {
+                    listener.onItemClick(view, item);
                 }
             });
         }

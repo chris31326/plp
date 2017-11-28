@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void initObjects() {
         inputValidation = new InputValidation(activity);
-        databaseHelper = new DBHelper(activity);
+        databaseHelper = DBHelper.getInstance(activity);
         user = new User();
     }
 

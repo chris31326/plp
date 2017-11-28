@@ -14,6 +14,7 @@ import com.aditya.filebrowser.Constants;
 import com.aditya.filebrowser.FileChooser;
 import com.example.xin.fileprotector.R;
 import com.example.xin.fileprotector.activity.filelist.FileListActivity;
+import com.example.xin.fileprotector.crypto.CryptoFactory;
 import com.example.xin.fileprotector.crypto.Encryptor;
 import com.example.xin.fileprotector.db.DBHelper;
 import com.example.xin.fileprotector.db.FileInfo;
@@ -24,16 +25,13 @@ import org.apache.commons.codec.binary.Hex;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 import javax.crypto.NoSuchPaddingException;
@@ -44,7 +42,6 @@ import droidninja.filepicker.FilePickerConst;
 public class MainActivity extends AppCompatActivity {
     private static final int ADD_FILES_REQUEST_CODE = 7;
     private Encryptor encryptor;
-    private KeyStore keyStore = null;
     private static final String ALIAS = "hellohello";//TODO:For test only
     private DBHelper dbHelper;
 
@@ -54,14 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        try {
-            keyStore = KeyStore.getInstance("AndroidKeyStore");
-            keyStore.load(null);
-        } catch (KeyStoreException | NoSuchAlgorithmException | IOException | CertificateException e) {
-            e.printStackTrace();
-        }
-        encryptor = new Encryptor(keyStore);
-        dbHelper = new DBHelper(this);
+        encryptor = CryptoFactory.encryptor;
+        dbHelper = DBHelper.getInstance(this);
 
         findViewById(R.id.add_photos).bringToFront();
         findViewById(R.id.add_files).bringToFront();

@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initObjects() {
-        databaseHelper = new DBHelper(activity);
+        databaseHelper = DBHelper.getInstance(activity);
         inputValidation = new InputValidation(activity);
     }
 
