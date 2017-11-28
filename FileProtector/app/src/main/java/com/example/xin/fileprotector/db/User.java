@@ -1,5 +1,4 @@
-package com.example.xin.fileprotector;
-
+package com.example.xin.fileprotector.db;
 
 public class User {
 

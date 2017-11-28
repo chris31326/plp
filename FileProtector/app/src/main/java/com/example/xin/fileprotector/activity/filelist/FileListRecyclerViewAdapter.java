@@ -1,10 +1,13 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.activity.filelist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.xin.fileprotector.R;
+import com.example.xin.fileprotector.db.FileInfo;
 
 import java.util.List;
 

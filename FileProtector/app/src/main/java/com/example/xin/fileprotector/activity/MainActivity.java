@@ -1,4 +1,4 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -12,8 +12,12 @@ import android.widget.Toast;
 
 import com.aditya.filebrowser.Constants;
 import com.aditya.filebrowser.FileChooser;
+import com.example.xin.fileprotector.R;
+import com.example.xin.fileprotector.activity.filelist.FileListActivity;
 import com.example.xin.fileprotector.crypto.Encryptor;
 import com.example.xin.fileprotector.db.DBHelper;
+import com.example.xin.fileprotector.db.FileInfo;
+import com.example.xin.fileprotector.util.FileType;
 
 import org.apache.commons.codec.binary.Hex;
 

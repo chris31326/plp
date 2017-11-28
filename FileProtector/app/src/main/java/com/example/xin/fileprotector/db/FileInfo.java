@@ -1,4 +1,6 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.db;
+
+import com.example.xin.fileprotector.util.FileType;
 
 public class FileInfo {
     private int id;

@@ -5,8 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.xin.fileprotector.FileInfo;
-import com.example.xin.fileprotector.FileType;
+import com.example.xin.fileprotector.util.FileType;
 
 import java.util.ArrayList;
 import java.util.List;

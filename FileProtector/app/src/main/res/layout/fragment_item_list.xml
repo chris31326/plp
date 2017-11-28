@@ -8,6 +8,6 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.xin.fileprotector.FileListActivity"
+    tools:context="com.example.xin.fileprotector.activity.filelist.FileListActivity"
     tools:listitem="@layout/fragment_item"
     android:background="@color/colorBackground"/>

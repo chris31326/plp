@@ -1,4 +1,4 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.util;
 
 import android.app.Activity;
 import android.content.Context;

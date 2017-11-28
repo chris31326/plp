@@ -1,6 +1,5 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.activity.filelist;
 
-import android.os.Bundle;
 import android.view.View;
 
 public interface ItemClickListener {

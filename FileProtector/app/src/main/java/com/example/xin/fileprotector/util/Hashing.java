@@ -1,4 +1,4 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

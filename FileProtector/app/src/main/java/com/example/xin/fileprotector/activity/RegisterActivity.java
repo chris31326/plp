@@ -1,4 +1,4 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +10,11 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.xin.fileprotector.R;
 import com.example.xin.fileprotector.db.DBHelper;
+import com.example.xin.fileprotector.db.User;
+import com.example.xin.fileprotector.util.Hashing;
+import com.example.xin.fileprotector.util.InputValidation;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 

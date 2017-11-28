@@ -1,4 +1,4 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.activity.filelist;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.example.xin.fileprotector.util.FileType;
+import com.example.xin.fileprotector.R;
 import com.example.xin.fileprotector.db.DBHelper;
+import com.example.xin.fileprotector.db.FileInfo;
 
 import java.util.ArrayList;
 import java.util.List;
