@@ -23,16 +23,16 @@ public class FileListRecyclerViewAdapter extends RecyclerView.Adapter<FileListRe
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_item, parent, false);
 
         return new ViewHolder(view, clickListener);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.item = files.get(position);
-        holder.contentView.setText(files.get(position).getEncryptedFileName());
+        holder.contentView.setText(files.get(position).getOriginalPath());
     }
 
     @Override
@@ -40,9 +40,9 @@ public class FileListRecyclerViewAdapter extends RecyclerView.Adapter<FileListRe
         return files.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView contentView;
-        public FileInfo item;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView contentView;
+        private FileInfo item;
 
         public ViewHolder(final View view, final ItemClickListener listener) {
             super(view);
