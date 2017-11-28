@@ -1,12 +1,11 @@
 package com.example.xin.fileprotector;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +17,9 @@ public class FileListActivity extends AppCompatActivity {
     private List<FileInfo> fileList;
     private DBHelper dbHelper;
     private String fileType;
-    private KeyStore keyStore = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         fileType = getIntent().getExtras().getString("FileType");
@@ -45,10 +43,17 @@ public class FileListActivity extends AppCompatActivity {
     }
 
     private void getDataFromSQLite() {
+        final FileType type;
+        try {
+            type = FileType.valueOf(fileType);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, "Unknown file type '" + fileType + "'", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (!dbHelper.fileTable.tableEmpty()) {
-                fileList.clear();
-                fileList.addAll(dbHelper.fileTable.getFileByType(FileType.valueOf(fileType)));
+            fileList.clear();
+            fileList.addAll(dbHelper.fileTable.getFileByType(type));
         }
     }
-
 }

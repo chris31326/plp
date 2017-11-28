@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.aditya.filebrowser.Constants;
@@ -163,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickFolderPhoto(final View view) {
+    public void onClickFolder(final View view) {
         final Intent intent = new Intent(this, FileListActivity.class);
-        intent.putExtra("FileType", FileType.Photo.toString());
+        intent.putExtra("FileType", ((Button)view).getText().toString());
         startActivity(intent);
     }
 }

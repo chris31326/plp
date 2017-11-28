@@ -30,7 +30,7 @@
             android:layout_column="0"
             android:layout_row="0"
             android:text="Photo"
-            android:onClick="onClickFolderPhoto"/>
+            android:onClick="onClickFolder" />
 
         <Button
             android:id="@+id/button_audio"
@@ -43,7 +43,8 @@
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_row="0"
-            android:text="Audio" />
+            android:text="Audio"
+            android:onClick="onClickFolder" />
 
         <Button
             android:id="@+id/button_video"
@@ -56,7 +57,8 @@
             android:layout_columnWeight="1"
             android:layout_row="1"
             android:layout_rowWeight="1"
-            android:text="Video" />
+            android:text="Video"
+            android:onClick="onClickFolder" />
 
         <Button
             android:id="@+id/button_documents"
@@ -69,7 +71,8 @@
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_row="1"
-            android:text="Documents" />
+            android:text="Document"
+            android:onClick="onClickFolder" />
 
         <Button
             android:id="@+id/button_others"
@@ -82,7 +85,8 @@
             android:layout_rowWeight="1"
             android:layout_column="0"
             android:layout_row="2"
-            android:text="Others" />
+            android:text="Others"
+            android:onClick="onClickFolder" />
 
         <Button
             android:id="@+id/button_decrypted"
@@ -95,7 +99,8 @@
             android:layout_rowWeight="1"
             android:layout_column="1"
             android:layout_row="2"
-            android:text="Decrypted" />
+            android:text="Decrypted"
+            android:onClick="onClickFolder" />
     </GridLayout>
 
     <android.support.design.widget.FloatingActionButton
