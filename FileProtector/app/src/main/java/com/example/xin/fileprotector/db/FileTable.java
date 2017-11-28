@@ -21,10 +21,10 @@ public class FileTable {
     private static final String COLUMN_ORIGINAL_PATH = "original_path";
     private static final String COLUMN_FILE_TYPE = "file_type";
     private static final String COLUMN_KEY = "key";
-    /// true = 1, false = 0
+    /** true = 1, false = 0 */
     private static final String COLUMN_IS_ENCRYPTED = "is_encrypted";
 
-    private final String CREATE_FILE_TABLE_QUERY = "CREATE TABLE " + FILE_TABLE_NAME + "("
+    private static final String CREATE_FILE_TABLE_QUERY = "CREATE TABLE " + FILE_TABLE_NAME + "("
                         + COLUMN_FILE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                         + COLUMN_EN_FILE_NAME + " TEXT,"
                         + COLUMN_ORIGINAL_PATH + " TEXT,"
@@ -32,7 +32,7 @@ public class FileTable {
                         + COLUMN_KEY + " TEXT,"
                         + COLUMN_IS_ENCRYPTED + " INTEGER" + ")";
 
-    private final String DROP_FILE_TABLE_QUERY = "DROP TABLE IF EXISTS " + FILE_TABLE_NAME;
+    private static final String DROP_FILE_TABLE_QUERY = "DROP TABLE IF EXISTS " + FILE_TABLE_NAME;
 
     public FileTable(SQLiteOpenHelper helper) {
         this.helper = helper;
