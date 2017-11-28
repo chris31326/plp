@@ -27,8 +27,7 @@ public class DecryptAndView implements ItemClickListener {
     @Override
     public void onItemClick(final View view, final FileInfo fileInfo) {
         final File encryptedFile = new File(fileInfo.getEncryptedFileName());
-        //final File outFile = new File(encryptedFile.getParentFile(), new File(fileInfo.getOriginalPath()).getName());
-        final File outFile = new File(Environment.getExternalStorageDirectory(), new File(fileInfo.getOriginalPath()).getName());
+        final File outFile = new File(fileInfo.getOriginalPath());
         final byte[] iv;
         try {
             iv = Hex.decodeHex(fileInfo.getKey().toCharArray());
