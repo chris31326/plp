@@ -4,13 +4,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.example.xin.fileprotector.crypto.CryptoFactory;
 import com.example.xin.fileprotector.db.FileInfo;
+import com.example.xin.fileprotector.util.Util;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -41,7 +41,9 @@ public class DecryptAndView implements ItemClickListener {
             throw new IllegalStateException(e);
         }
 
-        final String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(getExt(outFile.getName()));
+        Util.rescanFile(context, outFile);
+
+        final String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(Util.getFileExt(outFile.getName()));
 
         final Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(outFile), mimeType);
@@ -53,13 +55,5 @@ public class DecryptAndView implements ItemClickListener {
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, "No app for this type of file found.", Toast.LENGTH_LONG).show();
         }
-    }
-
-    private String getExt(final String name) {
-        final int dot = name.lastIndexOf('.');
-        if (dot == -1) {
-            return "";
-        }
-        return name.substring(dot+1);
     }
 }

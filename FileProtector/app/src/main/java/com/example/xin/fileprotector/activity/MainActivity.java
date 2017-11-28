@@ -3,7 +3,6 @@ package com.example.xin.fileprotector.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,7 @@ import com.example.xin.fileprotector.crypto.Encryptor;
 import com.example.xin.fileprotector.db.DBHelper;
 import com.example.xin.fileprotector.db.FileInfo;
 import com.example.xin.fileprotector.util.FileType;
+import com.example.xin.fileprotector.util.Util;
 
 import org.apache.commons.codec.binary.Hex;
 
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         sourceFile.delete();
 
-        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{ sourceFile.getAbsolutePath() }, null, null);
+        Util.rescanFile(this, sourceFile);
     }
 
     public void onClickAddPhotos(final View view) {
