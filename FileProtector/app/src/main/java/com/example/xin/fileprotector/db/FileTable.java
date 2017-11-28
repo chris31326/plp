@@ -185,7 +185,7 @@ public class FileTable {
 
     public boolean tableEmpty() {
         final SQLiteDatabase db = helper.getReadableDatabase();
-        final String count = "SELECT count(*) FROM" + FILE_TABLE_NAME;
+        final String count = "SELECT count(*) FROM " + FILE_TABLE_NAME;
 
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
