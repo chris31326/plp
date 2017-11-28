@@ -1,6 +1,5 @@
 package com.example.xin.fileprotector;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -10,6 +9,8 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.xin.fileprotector.db.DBHelper;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 

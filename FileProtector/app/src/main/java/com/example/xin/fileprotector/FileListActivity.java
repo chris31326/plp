@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.example.xin.fileprotector.db.DBHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 

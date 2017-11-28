@@ -1,4 +1,4 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.crypto;
 
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
@@ -37,12 +37,12 @@ public class Encryptor {
     private FileOutputStream fos = null;
     private KeyStore keyStore = null;
 
-    Encryptor(final KeyStore keyStore) {
+    public Encryptor(final KeyStore keyStore) {
         this.keyStore = keyStore;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    boolean encryptFile(final InputStream fis, final File outputFile, final String alias)
+    public boolean encryptFile(final InputStream fis, final File outputFile, final String alias)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, KeyStoreException,
             UnrecoverableEntryException {

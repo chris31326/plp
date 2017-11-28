@@ -1,4 +1,4 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.crypto;
 
 import android.util.Base64;
 
@@ -30,7 +30,7 @@ public class Decryptor {
     private FileOutputStream fos = null;
     private KeyStore keyStore;
 
-    Decryptor(KeyStore keyStore)  {
+    public Decryptor(KeyStore keyStore)  {
         this.keyStore = keyStore;
     }
 
@@ -40,7 +40,7 @@ public class Decryptor {
 //        keyStore.load(null);
 //    }
 
-    boolean decryptFile(File inputFile, File outputFile, final String alias, final byte[] iv)
+    public boolean decryptFile(File inputFile, File outputFile, final String alias, final byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException,
             InvalidAlgorithmParameterException, InvalidKeyException, UnrecoverableEntryException
             , KeyStoreException {

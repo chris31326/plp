@@ -48,7 +48,6 @@ public class FileInfo {
         this.type = type;
     }
 
-
     public boolean isEncrypted() {
         return isEncrypted;
     }

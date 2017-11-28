@@ -1,4 +1,4 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

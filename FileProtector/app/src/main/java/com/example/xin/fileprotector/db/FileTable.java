@@ -1,9 +1,13 @@
-package com.example.xin.fileprotector;
+package com.example.xin.fileprotector.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.xin.fileprotector.FileInfo;
+import com.example.xin.fileprotector.FileType;
+
 import java.util.ArrayList;
 import java.util.List;
 
