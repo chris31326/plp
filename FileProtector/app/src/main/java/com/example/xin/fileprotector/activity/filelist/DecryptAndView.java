@@ -58,7 +58,7 @@ public class DecryptAndView implements ItemClickListener {
         try {
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, "No app for this type of file found.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "File decrypted, but no app for this type of file found.", Toast.LENGTH_LONG).show();
         }
     }
 }

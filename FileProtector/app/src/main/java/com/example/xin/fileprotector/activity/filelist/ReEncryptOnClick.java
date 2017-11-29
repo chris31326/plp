@@ -2,6 +2,7 @@ package com.example.xin.fileprotector.activity.filelist;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.xin.fileprotector.db.DBHelper;
 import com.example.xin.fileprotector.db.FileInfo;
@@ -24,5 +25,6 @@ public class ReEncryptOnClick implements ItemClickListener {
         final File file = new File(fileInfo.getOriginalPath());
         file.delete();
         Util.rescanFile(context, file);
+        Toast.makeText(context, "File re-encrypted.", Toast.LENGTH_SHORT).show();
     }
 }

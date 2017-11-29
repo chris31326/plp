@@ -53,6 +53,12 @@ public class FileListRecyclerViewAdapter extends RecyclerView.Adapter<FileListRe
                 @Override
                 public void onClick(final View view) {
                     listener.onItemClick(view, item);
+
+                    final int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        files.remove(pos);
+                        FileListRecyclerViewAdapter.this.notifyDataSetChanged();
+                    }
                 }
             });
         }
