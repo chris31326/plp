@@ -22,11 +22,10 @@
         </activity>
         <activity
             android:name=".activity.RegisterActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainActivity"
-            android:label="All Files"></activity>
-        <activity android:name=".activity.filelist.FileListActivity"></activity>
+            android:label="All Files" />
+        <activity android:name=".activity.filelist.FileListActivity" />
     </application>
-
 </manifest>
