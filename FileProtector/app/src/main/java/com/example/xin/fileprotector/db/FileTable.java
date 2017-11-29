@@ -57,29 +57,21 @@ public class FileTable {
                 COLUMN_ORIGINAL_PATH + " = ?", new String[]{ fileInfo.getOriginalPath() },
                 null, null, null);
 
+        final ContentValues values = new ContentValues();
+        values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
+        values.put(COLUMN_FILE_TYPE, fileInfo.getType());
+        values.put(COLUMN_KEY, fileInfo.getKey());
+        values.put(COLUMN_IS_ENCRYPTED, (fileInfo.isEncrypted() ? 1 : 0));
+
         final String oldEncFileToRemove;
 
         if (cc.getCount() == 0) {
             oldEncFileToRemove = null;
-
-            final ContentValues values = new ContentValues();
-            values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
             values.put(COLUMN_ORIGINAL_PATH, fileInfo.getOriginalPath());
-            values.put(COLUMN_FILE_TYPE, fileInfo.getType());
-            values.put(COLUMN_KEY, fileInfo.getKey());
-            values.put(COLUMN_IS_ENCRYPTED, (fileInfo.isEncrypted() ? 1 : 0));
-
             db.insert(FILE_TABLE_NAME, null, values);
         } else {
             cc.moveToFirst();
             oldEncFileToRemove = cc.getString(0);
-
-            final ContentValues values = new ContentValues();
-            values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
-            values.put(COLUMN_FILE_TYPE, fileInfo.getType());
-            values.put(COLUMN_KEY, fileInfo.getKey());
-            values.put(COLUMN_IS_ENCRYPTED, (fileInfo.isEncrypted() ? 1 : 0));
-
             db.update(FILE_TABLE_NAME, values,
                     COLUMN_ORIGINAL_PATH + " = ?", new String[]{ String.valueOf(fileInfo.getOriginalPath()) });
         }
