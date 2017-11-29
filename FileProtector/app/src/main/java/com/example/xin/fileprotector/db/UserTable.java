@@ -54,7 +54,7 @@ public class UserTable {
     public void updateUser(final User user) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, user.getName());
         values.put(COLUMN_USER_EMAIL, user.getEmail());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
@@ -69,7 +69,7 @@ public class UserTable {
         final String selection = COLUMN_USER_EMAIL + " = ?";
         final String[] selectionArgs = {email};
 
-        Cursor cursor = db.query(TABLE_USER, //Table to query
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause
@@ -90,7 +90,7 @@ public class UserTable {
         final String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
         final String[] selectionArgs = { email, password };
 
-        Cursor cursor = db.query(TABLE_USER, //Table to query
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return
                 selection,                  //columns for the WHERE clause
                 selectionArgs,              //The values for the WHERE clause

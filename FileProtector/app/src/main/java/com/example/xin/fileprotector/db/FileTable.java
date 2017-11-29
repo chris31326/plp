@@ -50,7 +50,7 @@ public class FileTable {
     public void addFile(final FileInfo fileInfo) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
         values.put(COLUMN_ORIGINAL_PATH, fileInfo.getOriginalPath());
         values.put(COLUMN_FILE_TYPE, fileInfo.getType());
@@ -64,7 +64,7 @@ public class FileTable {
     public void updateFile(final FileInfo fileInfo) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
         values.put(COLUMN_ORIGINAL_PATH, fileInfo.getOriginalPath());
         values.put(COLUMN_FILE_TYPE, fileInfo.getType());
@@ -89,9 +89,9 @@ public class FileTable {
 
         final String selection = COLUMN_FILE_TYPE + " = ?";
         final String[] selectionArgs = {type.toString()};
-        List<FileInfo> fileInfoList = new ArrayList<>();
+        final List<FileInfo> fileInfoList = new ArrayList<>();
 
-        Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
                 columns,                          //columns to return
                 selection,                        //columns for the WHERE clause
                 selectionArgs,                    //The values for the WHERE clause
@@ -131,9 +131,9 @@ public class FileTable {
 
         final String selection = COLUMN_IS_ENCRYPTED + " = ?";
         final String[] selectionArgs = {"0"};
-        List<FileInfo> fileInfoList = new ArrayList<>();
+        final List<FileInfo> fileInfoList = new ArrayList<>();
 
-        Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
                 columns,                          //columns to return
                 selection,                        //columns for the WHERE clause
                 selectionArgs,                    //The values for the WHERE clause
@@ -167,7 +167,7 @@ public class FileTable {
         final String selection = COLUMN_IS_ENCRYPTED + " = ?";
         final String[] selectionArgs = {fileName};
 
-        Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
+        final Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
                 columns,                           //columns to return
                 selection,                         //columns for the WHERE clause
                 selectionArgs,                     //The values for the WHERE clause
@@ -187,9 +187,9 @@ public class FileTable {
         final SQLiteDatabase db = helper.getReadableDatabase();
         final String count = "SELECT count(*) FROM " + FILE_TABLE_NAME;
 
-        Cursor mcursor = db.rawQuery(count, null);
+        final Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
-        int icount = mcursor.getInt(0);
+        final int icount = mcursor.getInt(0);
 
         return icount <= 0;
     }
