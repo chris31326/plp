@@ -41,7 +41,7 @@ public class FileListRecyclerViewAdapter extends RecyclerView.Adapter<FileListRe
         return files.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView contentView;
         private FileInfo item;
 

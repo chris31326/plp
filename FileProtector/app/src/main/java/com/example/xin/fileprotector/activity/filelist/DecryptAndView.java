@@ -9,6 +9,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.example.xin.fileprotector.crypto.CryptoFactory;
+import com.example.xin.fileprotector.db.DBHelper;
 import com.example.xin.fileprotector.db.FileInfo;
 import com.example.xin.fileprotector.util.Util;
 
@@ -19,9 +20,11 @@ import java.io.File;
 
 public class DecryptAndView implements ItemClickListener {
     private final Context context;
+    private final DBHelper dbHelper;
 
-    public DecryptAndView(final Context context) {
+    public DecryptAndView(final Context context, final DBHelper dbHelper) {
         this.context = context;
+        this.dbHelper = dbHelper;
     }
 
     @Override
@@ -40,6 +43,8 @@ public class DecryptAndView implements ItemClickListener {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+
+        dbHelper.fileTable.setFileDecrypted(fileInfo.getId());
 
         Util.rescanFile(context, outFile);
 

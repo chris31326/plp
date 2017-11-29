@@ -88,6 +88,22 @@ public class FileTable {
     }
 
     public List<FileInfo> getFileByType(final FileType type) {
+        final String selection =
+                COLUMN_FILE_TYPE + " = ? AND " +
+                COLUMN_IS_ENCRYPTED + " = 1";
+        final String[] selectionArgs = {type.toString()};
+
+        return getFiles(selection, selectionArgs);
+    }
+
+    public List<FileInfo> getDecryptedFiles() {
+        final String selection = COLUMN_IS_ENCRYPTED + " = ?";
+        final String[] selectionArgs = {"0"};
+
+        return getFiles(selection, selectionArgs);
+    }
+
+    private List<FileInfo> getFiles(final String selection, final String[] selectionArgs) {
         final String[] columns = {
                 COLUMN_FILE_ID,
                 COLUMN_ORIGINAL_PATH,
@@ -99,8 +115,6 @@ public class FileTable {
 
         final SQLiteDatabase db = helper.getReadableDatabase();
 
-        final String selection = COLUMN_FILE_TYPE + " = ?";
-        final String[] selectionArgs = {type.toString()};
         final List<FileInfo> fileInfoList = new ArrayList<>();
 
         final Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
@@ -129,72 +143,6 @@ public class FileTable {
         return fileInfoList;
     }
 
-    public List<FileInfo> getDecryptedFiles() {
-        final String[] columns = {
-                COLUMN_FILE_ID,
-                COLUMN_ORIGINAL_PATH,
-                COLUMN_EN_FILE_NAME,
-                COLUMN_FILE_TYPE,
-                COLUMN_KEY,
-                COLUMN_IS_ENCRYPTED
-        };
-
-        final SQLiteDatabase db = helper.getReadableDatabase();
-
-        final String selection = COLUMN_IS_ENCRYPTED + " = ?";
-        final String[] selectionArgs = {"0"};
-        final List<FileInfo> fileInfoList = new ArrayList<>();
-
-        final Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
-                columns,                          //columns to return
-                selection,                        //columns for the WHERE clause
-                selectionArgs,                    //The values for the WHERE clause
-                null,                    //group the rows
-                null,                     //filter by row groups
-                null);                   //The sort order
-
-        if (cursor.moveToFirst()) {
-            do {
-                FileInfo fileInfo = new FileInfo();
-                fileInfo.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_ID))));
-                fileInfo.setEncryptedFileName(cursor.getString(cursor.getColumnIndex(COLUMN_EN_FILE_NAME)));
-                fileInfo.setOriginalPath(cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_PATH)));
-                fileInfo.setType(FileType.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_FILE_TYPE))));
-                fileInfo.setKey(cursor.getString(cursor.getColumnIndex(COLUMN_KEY)));
-                fileInfo.setEncryptionStatus(1 == cursor.getColumnIndex(COLUMN_IS_ENCRYPTED));
-
-                fileInfoList.add(fileInfo);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        return fileInfoList;
-    }
-
-    public boolean checkFile(final String fileName) {
-        final SQLiteDatabase db = helper.getReadableDatabase();
-
-        final String[] columns = {COLUMN_EN_FILE_NAME};
-        final String selection = COLUMN_IS_ENCRYPTED + " = ?";
-        final String[] selectionArgs = {fileName};
-
-        final Cursor cursor = db.query(FILE_TABLE_NAME, //Table to query
-                columns,                           //columns to return
-                selection,                         //columns for the WHERE clause
-                selectionArgs,                     //The values for the WHERE clause
-                null,                      //group the rows
-                null,                       //filter by row groups
-                null);                     //The sort order
-
-        final int cursorCount = cursor.getCount();
-
-        cursor.close();
-        db.close();
-
-        return cursorCount > 0;
-    }
-
     public boolean tableEmpty() {
         final SQLiteDatabase db = helper.getReadableDatabase();
         final String count = "SELECT count(*) FROM " + FILE_TABLE_NAME;
@@ -204,5 +152,16 @@ public class FileTable {
         final int icount = mcursor.getInt(0);
 
         return icount <= 0;
+    }
+
+    public void setFileDecrypted(final int id) {
+        final SQLiteDatabase db = helper.getWritableDatabase();
+
+        final ContentValues values = new ContentValues();
+        values.put(COLUMN_IS_ENCRYPTED, 0);
+
+        db.update(FILE_TABLE_NAME, values,
+                COLUMN_FILE_ID + " = ?", new String[]{ String.valueOf(id) });
+        db.close();
     }
 }

@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         fileInfo.setOriginalPath(sourceFile.getAbsolutePath());
         fileInfo.setType(FileType.fromFile(sourceFile));
         fileInfo.setKey(new String(Hex.encodeHex(encryptor.getIv())));
+        fileInfo.setEncryptionStatus(true);
 
         dbHelper.fileTable.addOrUpdateFile(fileInfo);
 
