@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         fileInfo.setType(FileType.fromFile(sourceFile));
         fileInfo.setKey(new String(Hex.encodeHex(encryptor.getIv())));
 
-        dbHelper.fileTable.addFile(fileInfo);
+        dbHelper.fileTable.addOrUpdateFile(fileInfo);
 
         sourceFile.delete();
 

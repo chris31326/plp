@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.xin.fileprotector.util.FileType;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,32 +48,51 @@ public class FileTable {
         onCreate(db);
     }
 
-    public void addFile(final FileInfo fileInfo) {
+    public void addOrUpdateFile(final FileInfo fileInfo) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
-        final ContentValues values = new ContentValues();
-        values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
-        values.put(COLUMN_ORIGINAL_PATH, fileInfo.getOriginalPath());
-        values.put(COLUMN_FILE_TYPE, fileInfo.getType());
-        values.put(COLUMN_KEY, fileInfo.getKey());
-        values.put(COLUMN_IS_ENCRYPTED, (fileInfo.isEncrypted() ? 1 : 0));
+        db.beginTransaction();
 
-        db.insert(FILE_TABLE_NAME, null, values);
+        final Cursor cc = db.query(FILE_TABLE_NAME, new String[]{ COLUMN_EN_FILE_NAME },
+                COLUMN_ORIGINAL_PATH + " = ?", new String[]{ fileInfo.getOriginalPath() },
+                null, null, null);
+
+        final String oldEncFileToRemove;
+
+        if (cc.getCount() == 0) {
+            oldEncFileToRemove = null;
+
+            final ContentValues values = new ContentValues();
+            values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
+            values.put(COLUMN_ORIGINAL_PATH, fileInfo.getOriginalPath());
+            values.put(COLUMN_FILE_TYPE, fileInfo.getType());
+            values.put(COLUMN_KEY, fileInfo.getKey());
+            values.put(COLUMN_IS_ENCRYPTED, (fileInfo.isEncrypted() ? 1 : 0));
+
+            db.insert(FILE_TABLE_NAME, null, values);
+        } else {
+            cc.moveToFirst();
+            oldEncFileToRemove = cc.getString(0);
+
+            final ContentValues values = new ContentValues();
+            values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
+            values.put(COLUMN_FILE_TYPE, fileInfo.getType());
+            values.put(COLUMN_KEY, fileInfo.getKey());
+            values.put(COLUMN_IS_ENCRYPTED, (fileInfo.isEncrypted() ? 1 : 0));
+
+            db.update(FILE_TABLE_NAME, values,
+                    COLUMN_ORIGINAL_PATH + " = ?", new String[]{ String.valueOf(fileInfo.getOriginalPath()) });
+        }
+
+        cc.close();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
         db.close();
-    }
 
-    public void updateFile(final FileInfo fileInfo) {
-        final SQLiteDatabase db = helper.getWritableDatabase();
-
-        final ContentValues values = new ContentValues();
-        values.put(COLUMN_EN_FILE_NAME, fileInfo.getEncryptedFileName());
-        values.put(COLUMN_ORIGINAL_PATH, fileInfo.getOriginalPath());
-        values.put(COLUMN_FILE_TYPE, fileInfo.getType());
-        values.put(COLUMN_KEY, fileInfo.getKey());
-        values.put(COLUMN_IS_ENCRYPTED, (fileInfo.isEncrypted() ? 1 : 0));
-
-        db.update(FILE_TABLE_NAME, values, COLUMN_FILE_ID + " = ?", new String[]{ String.valueOf(fileInfo.getId()) });
-        db.close();
+        if (oldEncFileToRemove != null) {
+            new File(oldEncFileToRemove).delete();
+        }
     }
 
     public List<FileInfo> getFileByType(final FileType type) {
