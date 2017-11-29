@@ -51,44 +51,27 @@ public class UserTable {
         db.close();
     }
 
-    public void updateUser(final User user) {
-        final SQLiteDatabase db = helper.getWritableDatabase();
-
-        final ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_NAME, user.getName());
-        values.put(COLUMN_USER_EMAIL, user.getEmail());
-        values.put(COLUMN_USER_PASSWORD, user.getPassword());
-
-        db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(user.getId())});
-        db.close();
-    }
-
     public boolean checkUser(final String email) {
-        final String[] columns = {COLUMN_USER_ID};
-        final SQLiteDatabase db = helper.getReadableDatabase();
         final String selection = COLUMN_USER_EMAIL + " = ?";
         final String[] selectionArgs = {email};
 
-        final Cursor cursor = db.query(TABLE_USER, //Table to query
-                columns,                    //columns to return
-                selection,                  //columns for the WHERE clause
-                selectionArgs,              //The values for the WHERE clause
-                null,               //group the rows
-                null,                //filter by row groups
-                null);              //The sort order
-
-        final int cursorCount = cursor.getCount();
-        cursor.close();
-        db.close();
-
-        return cursorCount > 0;
+        return hasUsersThatMatch(selection, selectionArgs);
     }
 
     public boolean checkUser(final String email, final String password) {
-        final String[] columns = {COLUMN_USER_ID};
-        final SQLiteDatabase db = helper.getReadableDatabase();
         final String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
         final String[] selectionArgs = { email, password };
+
+        return hasUsersThatMatch(selection, selectionArgs);
+    }
+
+    public boolean hasUsersAlready() {
+        return hasUsersThatMatch(null, null);
+    }
+
+    private boolean hasUsersThatMatch(final String selection, final String[] selectionArgs) {
+        final String[] columns = {COLUMN_USER_ID};
+        final SQLiteDatabase db = helper.getReadableDatabase();
 
         final Cursor cursor = db.query(TABLE_USER, //Table to query
                 columns,                    //columns to return

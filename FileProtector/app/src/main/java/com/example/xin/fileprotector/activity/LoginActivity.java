@@ -66,9 +66,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 login();
                 break;
             case R.id.textViewLinkRegister:
-                // Navigate to RegisterActivity
-                Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(intentRegister);
+                if (databaseHelper.userTable.hasUsersAlready()) {
+                    Toast.makeText(this, "Error: user already registered.", Toast.LENGTH_LONG).show();
+                } else {
+                    // Navigate to RegisterActivity
+                    Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
+                    startActivity(intentRegister);
+                }
                 break;
         }
     }
