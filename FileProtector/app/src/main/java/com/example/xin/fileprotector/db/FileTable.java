@@ -155,10 +155,18 @@ public class FileTable {
     }
 
     public void setFileDecrypted(final int id) {
+        setFileEncrypted(id, 0);
+    }
+
+    public void setFileEncrypted(final int id) {
+        setFileEncrypted(id, 1);
+    }
+
+    private void setFileEncrypted(final int id, final int v) {
         final SQLiteDatabase db = helper.getWritableDatabase();
 
         final ContentValues values = new ContentValues();
-        values.put(COLUMN_IS_ENCRYPTED, 0);
+        values.put(COLUMN_IS_ENCRYPTED, v);
 
         db.update(FILE_TABLE_NAME, values,
                 COLUMN_FILE_ID + " = ?", new String[]{ String.valueOf(id) });

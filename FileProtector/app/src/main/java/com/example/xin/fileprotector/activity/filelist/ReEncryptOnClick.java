@@ -5,6 +5,9 @@ import android.view.View;
 
 import com.example.xin.fileprotector.db.DBHelper;
 import com.example.xin.fileprotector.db.FileInfo;
+import com.example.xin.fileprotector.util.Util;
+
+import java.io.File;
 
 public class ReEncryptOnClick implements ItemClickListener {
     private final Context context;
@@ -17,5 +20,9 @@ public class ReEncryptOnClick implements ItemClickListener {
 
     @Override
     public void onItemClick(final View view, final FileInfo fileInfo) {
+        dbHelper.fileTable.setFileEncrypted(fileInfo.getId());
+        final File file = new File(fileInfo.getOriginalPath());
+        file.delete();
+        Util.rescanFile(context, file);
     }
 }
