@@ -3,126 +3,138 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.xin.fileprotector.activity.MainActivity">
 
-    <GridLayout
-        android:id="@+id/gridLayoutMainPage"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:columnCount="2"
-        android:rowCount="3"
         android:background="@color/colorBackground">
 
-        <Button
-            android:id="@+id/button_photo"
-            android:layout_margin="8dp"
-            android:background="@color/colorYellow"
-            android:textColor="@color/colorTextButton"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_row="0"
-            android:text="Photo"
-            android:onClick="onClickFolder" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:stretchColumns="*"
+            android:shrinkColumns="*"
+            android:padding="40dp">
+
+            <TableRow
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/button_photo"
+                    android:layout_width="118dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:height="50dp"
+                    android:backgroundTint="@color/colorYellow"
+                    android:onClick="onClickFolder"
+                    android:text="Photo"
+                    android:textColor="@color/colorTextButton"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_audio"
+                    android:layout_height="100dp"
+                    android:backgroundTint="@color/colorLightGrey"
+                    android:textColor="@color/colorTextButton"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:text="Audio"
+                    android:onClick="onClickFolder" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/button_video"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorLightGrey"
+                    android:onClick="onClickFolder"
+                    android:text="Video"
+                    android:textColor="@color/colorTextButton"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_documents"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorYellow"
+                    android:onClick="onClickFolder"
+                    android:text="Document"
+                    android:textColor="@color/colorTextButton"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/button_others"
+                    android:layout_height="100dp"
+                    android:backgroundTint="@color/colorYellow"
+                    android:textColor="@color/colorTextButton"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:text="Others"
+                    android:onClick="onClickFolder" />
+
+                <Button
+                    android:id="@+id/button_decrypted"
+                    android:layout_height="100dp"
+                    android:backgroundTint="@color/colorLightGrey"
+                    android:textColor="@color/colorTextButton"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_weight="1"
+                    android:text="Decrypted"
+                    android:onClick="onClickFolder" />
+            </TableRow>
+
+        </TableLayout>
 
         <Button
-            android:id="@+id/button_audio"
-            android:layout_margin="8dp"
-            android:background="@color/colorLightGrey"
+            android:id="@+id/add_photos"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:backgroundTint="@color/colorTopBar"
             android:textColor="@color/colorTextButton"
             android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_row="0"
-            android:text="Audio"
-            android:onClick="onClickFolder" />
+            android:textSize="15sp"
+            android:text="+ photos"
+            android:layout_marginStart="40dp"
+            android:layout_marginBottom="50dp"
+            android:onClick="onClickAddPhotos" />
 
         <Button
-            android:id="@+id/button_video"
-            android:layout_margin="8dp"
-            android:background="@color/colorLightGrey"
+            android:id="@+id/add_files"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:backgroundTint="@color/colorTopBar"
             android:textColor="@color/colorTextButton"
             android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:layout_row="1"
-            android:layout_rowWeight="1"
-            android:text="Video"
-            android:onClick="onClickFolder" />
+            android:textSize="15sp"
+            android:text="+ docs"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="50dp"
+            android:onClick="onClickAddFiles" />
 
-        <Button
-            android:id="@+id/button_documents"
-            android:layout_margin="8dp"
-            android:background="@color/colorYellow"
-            android:textColor="@color/colorTextButton"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_row="1"
-            android:text="Document"
-            android:onClick="onClickFolder" />
-
-        <Button
-            android:id="@+id/button_others"
-            android:layout_margin="8dp"
-            android:background="@color/colorYellow"
-            android:textColor="@color/colorTextButton"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:text="Others"
-            android:onClick="onClickFolder" />
-
-        <Button
-            android:id="@+id/button_decrypted"
-            android:layout_margin="8dp"
-            android:background="@color/colorLightGrey"
-            android:textColor="@color/colorTextButton"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_row="2"
-            android:text="Decrypted"
-            android:onClick="onClickFolder" />
-    </GridLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_photos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorTopBar"
-        android:tint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:onClick="onClickAddPhotos" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_files"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|left"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorTopBar"
-        android:tint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:onClick="onClickAddFiles" />
-
+    </RelativeLayout>
 </FrameLayout>
