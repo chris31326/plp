@@ -33,10 +33,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.android.support:design:26.1.0'
-    // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile 'commons-codec:commons-codec:1.11'
     compile 'com.adityak:browsemyfiles:1.7'
     compile 'com.droidninja:filepicker:2.1.1'
     compile 'com.github.bumptech.glide:glide:4.3.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
+    compile 'com.sun.mail:android-mail:1.6.0'
+    compile 'com.sun.mail:android-activation:1.6.0'
 }

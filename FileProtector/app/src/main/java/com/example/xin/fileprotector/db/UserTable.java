@@ -87,4 +87,29 @@ public class UserTable {
 
         return cursorCount > 0;
     }
+
+    public String getRegisteredUserEmail() {
+        final String[] columns = {COLUMN_USER_EMAIL};
+        final SQLiteDatabase db = helper.getReadableDatabase();
+
+        final Cursor cursor = db.query(TABLE_USER, //Table to query
+                columns,                    //columns to return
+                null,               //columns for the WHERE clause
+                null,           //The values for the WHERE clause
+                null,               //group the rows
+                null,                //filter by row groups
+                null);              //The sort order
+
+        final String email;
+        if (cursor.moveToFirst()) {
+            email = cursor.getString(0);
+        } else {
+            email = null;
+        }
+
+        cursor.close();
+        db.close();
+
+        return email;
+    }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.xin.fileprotector.R;
 import com.example.xin.fileprotector.db.DBHelper;
+import com.example.xin.fileprotector.email.GMailSendAsyncTask;
 import com.example.xin.fileprotector.util.Hashing;
 import com.example.xin.fileprotector.util.InputValidation;
 
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void login() {
         if (!verifyFromSQLite()) {
-            onLoginFailed();
+            Toast.makeText(getBaseContext(), "Error: some fields are invalid", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -87,22 +88,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final String password = textInputEditTextPassword.getText().toString();
         final String hashedPassword = Hashing.getHexString(password.trim());
 
-        if (databaseHelper.userTable.checkUser(email, hashedPassword)) {
-            //Intent accountsIntent = new Intent(activity, UserListActivity.class);
-            //accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
+        if (!databaseHelper.userTable.checkUser(email, hashedPassword)) {
+            Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
-            Intent accountsIntent = new Intent(activity, MainActivity.class);
-//            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-            emptyInputEditText();
-            startActivity(accountsIntent);
-
-//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-            onLoginSuccess();
+            final String registeredEmail = databaseHelper.userTable.getRegisteredUserEmail();
+            if (registeredEmail != null) {
+                new GMailSendAsyncTask(
+                        registeredEmail,
+                        "unauthorized access",
+                        "Someone tried to login as " + email + " and failed.")
+                        .execute();
+            }
+            return;
         }
-        else {
-            onLoginFailed();
-        }
+
+        //Intent accountsIntent = new Intent(activity, UserListActivity.class);
+        //accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
+
+        final Intent accountsIntent = new Intent(activity, MainActivity.class);
+//        accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
+        emptyInputEditText();
+        startActivity(accountsIntent);
+
+//        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+        onLoginSuccess();
     }
 
     @Override
@@ -128,10 +138,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onLoginSuccess() {
         finish();
-    }
-
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
     }
 
     private boolean verifyFromSQLite() {
