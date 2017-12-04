@@ -19,6 +19,7 @@ import com.example.xin.fileprotector.util.InputValidation;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
+    private static final int MAX_LOGIN_ATTEMPTS = 5;
     private final AppCompatActivity activity = LoginActivity.this;
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatTextView textViewLinkRegister;
     private InputValidation inputValidation;
     private DBHelper databaseHelper;
+    private int failedLoginAttempts;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -87,15 +89,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final String password = textInputEditTextPassword.getText().toString();
         final String hashedPassword = Hashing.getHexString(password.trim());
 
-        if (!databaseHelper.userTable.checkUser(email, hashedPassword)) {
+        if (failedLoginAttempts >= MAX_LOGIN_ATTEMPTS || !databaseHelper.userTable.checkUser(email, hashedPassword)) {
             Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+
+            if (failedLoginAttempts <= MAX_LOGIN_ATTEMPTS) {
+                ++failedLoginAttempts;
+            }
+
+            if (failedLoginAttempts != MAX_LOGIN_ATTEMPTS) {
+                return;
+            }
 
             final String registeredEmail = databaseHelper.userTable.getRegisteredUserEmail();
             if (registeredEmail != null) {
                 new GMailSendAsyncTask(
                         registeredEmail,
                         "unauthorized access",
-                        "Someone tried to login as " + email + " and failed.")
+                        "Someone tried to login at least five times and failed.")
                         .execute();
             }
             return;
