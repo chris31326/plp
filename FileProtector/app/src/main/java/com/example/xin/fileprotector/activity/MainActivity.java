@@ -1,6 +1,7 @@
 package com.example.xin.fileprotector.activity;
 
 import android.Manifest;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -170,5 +171,15 @@ public class MainActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, FileListActivity.class);
         intent.putExtra("FileType", ((Button)view).getText().toString());
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        final FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            super.onBackPressed();
+        } else {
+            moveTaskToBack(true);
+        }
     }
 }
