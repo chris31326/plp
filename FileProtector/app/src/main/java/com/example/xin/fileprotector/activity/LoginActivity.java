@@ -19,7 +19,6 @@ import com.example.xin.fileprotector.util.InputValidation;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
-    private static final int REQUEST_SIGNUP = 0;
     private final AppCompatActivity activity = LoginActivity.this;
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
@@ -31,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private DBHelper databaseHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.appCompatButtonLogin:
                 login();
@@ -102,41 +101,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        //Intent accountsIntent = new Intent(activity, UserListActivity.class);
-        //accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-
         final Intent accountsIntent = new Intent(activity, MainActivity.class);
-//        accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-        emptyInputEditText();
         startActivity(accountsIntent);
-
-//        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-        onLoginSuccess();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-                Intent accountsIntent = new Intent(activity, MainActivity.class);
-                accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-                emptyInputEditText();
-                startActivity(accountsIntent);
-
-                // startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                this.finish();
-            }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        // disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
-    public void onLoginSuccess() {
         finish();
     }
 
@@ -155,13 +121,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         return valid;
     }
-
-    /**
-     * This method is to empty all input edit text
-     */
-    private void emptyInputEditText() {
-        textInputEditTextEmail.setText(null);
-        textInputEditTextPassword.setText(null);
-    }
 }
-
