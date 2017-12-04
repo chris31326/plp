@@ -51,16 +51,16 @@ public class UserTable {
         db.close();
     }
 
-    public boolean checkUser(final String email) {
+    public boolean checkUserAlreadyExists(final String email) {
         final String selection = COLUMN_USER_EMAIL + " = ?";
         final String[] selectionArgs = {email};
 
         return hasUsersThatMatch(selection, selectionArgs);
     }
 
-    public boolean checkUser(final String email, final String password) {
-        final String selection = COLUMN_USER_EMAIL + " = ?" + " AND " + COLUMN_USER_PASSWORD + " = ?";
-        final String[] selectionArgs = { email, password };
+    public boolean checkPassword(final String password) {
+        final String selection = COLUMN_USER_PASSWORD + " = ?";
+        final String[] selectionArgs = { password };
 
         return hasUsersThatMatch(selection, selectionArgs);
     }

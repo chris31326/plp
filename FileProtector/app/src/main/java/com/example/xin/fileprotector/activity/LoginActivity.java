@@ -21,9 +21,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = "LoginActivity";
     private static final int MAX_LOGIN_ATTEMPTS = 5;
     private final AppCompatActivity activity = LoginActivity.this;
-    private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
-    private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
     private AppCompatButton appCompatButtonLogin;
     private AppCompatTextView textViewLinkRegister;
@@ -43,9 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initViews() {
-        textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
-        textInputEditTextEmail = findViewById(R.id.textInputEditTextEmail);
         textInputEditTextPassword = findViewById(R.id.textInputEditTextPassword);
         appCompatButtonLogin = findViewById(R.id.appCompatButtonLogin);
         textViewLinkRegister = findViewById(R.id.textViewLinkRegister);
@@ -80,16 +76,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void login() {
-        if (!verifyFromSQLite()) {
+        if (!validateInput()) {
             Toast.makeText(getBaseContext(), "Error: some fields are invalid", Toast.LENGTH_LONG).show();
             return;
         }
 
-        final String email = textInputEditTextEmail.getText().toString().trim();
         final String password = textInputEditTextPassword.getText().toString();
         final String hashedPassword = Hashing.getHexString(password.trim());
 
-        if (failedLoginAttempts >= MAX_LOGIN_ATTEMPTS || !databaseHelper.userTable.checkUser(email, hashedPassword)) {
+        if (failedLoginAttempts >= MAX_LOGIN_ATTEMPTS || !databaseHelper.userTable.checkPassword(hashedPassword)) {
             Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
             if (failedLoginAttempts <= MAX_LOGIN_ATTEMPTS) {
@@ -116,16 +111,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
 
-    private boolean verifyFromSQLite() {
+    private boolean validateInput() {
         boolean valid = true;
 
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            valid = false;
-        }
-        if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            valid = false;
-        }
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_email))) {
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
             valid = false;
         }
 
