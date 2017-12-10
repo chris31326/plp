@@ -19,19 +19,18 @@ import com.example.xin.fileprotector.util.InputValidation;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
-    private static final int REQUEST_SIGNUP = 0;
+    private static final int MAX_LOGIN_ATTEMPTS = 5;
     private final AppCompatActivity activity = LoginActivity.this;
-    private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
-    private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
     private AppCompatButton appCompatButtonLogin;
     private AppCompatTextView textViewLinkRegister;
     private InputValidation inputValidation;
     private DBHelper databaseHelper;
+    private int failedLoginAttempts;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
@@ -42,9 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initViews() {
-        textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
-        textInputEditTextEmail = findViewById(R.id.textInputEditTextEmail);
         textInputEditTextPassword = findViewById(R.id.textInputEditTextPassword);
         appCompatButtonLogin = findViewById(R.id.appCompatButtonLogin);
         textViewLinkRegister = findViewById(R.id.textViewLinkRegister);
@@ -61,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         switch (v.getId()) {
             case R.id.appCompatButtonLogin:
                 login();
@@ -79,89 +76,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void login() {
-        if (!verifyFromSQLite()) {
+        if (!validateInput()) {
             Toast.makeText(getBaseContext(), "Error: some fields are invalid", Toast.LENGTH_LONG).show();
             return;
         }
 
-        final String email = textInputEditTextEmail.getText().toString().trim();
         final String password = textInputEditTextPassword.getText().toString();
         final String hashedPassword = Hashing.getHexString(password.trim());
 
-        if (!databaseHelper.userTable.checkUser(email, hashedPassword)) {
+        if (failedLoginAttempts >= MAX_LOGIN_ATTEMPTS || !databaseHelper.userTable.checkPassword(hashedPassword)) {
             Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+
+            if (failedLoginAttempts <= MAX_LOGIN_ATTEMPTS) {
+                ++failedLoginAttempts;
+            }
+
+            if (failedLoginAttempts != MAX_LOGIN_ATTEMPTS) {
+                return;
+            }
 
             final String registeredEmail = databaseHelper.userTable.getRegisteredUserEmail();
             if (registeredEmail != null) {
                 new GMailSendAsyncTask(
                         registeredEmail,
                         "unauthorized access",
-                        "Someone tried to login as " + email + " and failed.")
+                        "Someone tried to login at least five times and failed.")
                         .execute();
             }
             return;
         }
 
-        //Intent accountsIntent = new Intent(activity, UserListActivity.class);
-        //accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-
         final Intent accountsIntent = new Intent(activity, MainActivity.class);
-//        accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-        emptyInputEditText();
         startActivity(accountsIntent);
-
-//        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-        onLoginSuccess();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-                Intent accountsIntent = new Intent(activity, MainActivity.class);
-                accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-                emptyInputEditText();
-                startActivity(accountsIntent);
-
-                // startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                this.finish();
-            }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        // disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
-    public void onLoginSuccess() {
         finish();
     }
 
-    private boolean verifyFromSQLite() {
+    private boolean validateInput() {
         boolean valid = true;
 
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            valid = false;
-        }
-        if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            valid = false;
-        }
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_email))) {
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
             valid = false;
         }
 
         return valid;
     }
-
-    /**
-     * This method is to empty all input edit text
-     */
-    private void emptyInputEditText() {
-        textInputEditTextEmail.setText(null);
-        textInputEditTextPassword.setText(null);
-    }
 }
-

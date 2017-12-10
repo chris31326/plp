@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         final String password = textInputEditTextPassword.getText().toString();
         final String hashedPassword = Hashing.getHexString(password.trim());
 
-        if (!databaseHelper.userTable.checkUser(email.trim())) {
+        if (!databaseHelper.userTable.checkUserAlreadyExists(email.trim())) {
             user.setName(name.trim());
             user.setEmail(email.trim());
             user.setPassword(hashedPassword);
